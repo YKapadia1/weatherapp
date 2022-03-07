@@ -1,6 +1,6 @@
-# weatherapp
+# CO2509 Assignment: Weather and Forecast app
 
-A new Flutter project.
+An android app using Flutter aimed at showing the weather and forecast of user seleted cities.
 
 ## Getting Started
 
