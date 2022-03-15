@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'JSONList.dart';
 import 'drop_down_country.dart';
 
 var test2;

@@ -1,5 +1,3 @@
-//import 'dart:html';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'JSONList.dart';
@@ -90,7 +88,7 @@ class HomePage extends StatelessWidget {
                   Map test = test2[i];
                   listTest.add(test.values.toString());
                   listTest[i] = listTest[i]
-                      .replaceAll(new RegExp(r"\p{P}", unicode: true), "");
+                      .replaceAll(RegExp(r"\p{P}", unicode: true), "");
                 }
                 Navigator.push(
                     context,
