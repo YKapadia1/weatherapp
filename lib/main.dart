@@ -15,16 +15,6 @@ void main() {
 
 var responseText = 'test';
 
-void getResponse() async {
-  http.StreamedResponse response = await request.send();
-
-  if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
-  } else {
-    print(response.reasonPhrase);
-  }
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -99,25 +89,5 @@ class HomePage extends StatelessWidget {
             child: const Icon(Icons.add_location),
           ),
         ));
-  }
-}
-
-class AddCityRoute extends StatelessWidget {
-  const AddCityRoute({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add a city...'),
-      ),
-      body: DropDown(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          getResponse();
-        },
-        child: const Icon(Icons.web),
-      ),
-    );
   }
 }
