@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'drop_down_country.dart';
+import 'drop_down.dart';
 
-var test2;
+List<String> countryList = [];
+List<String> stateList = ['null'];
+List<String> cityList = ['null'];
+var tempCountryMap;
 
-List<String> listTest = [];
+var tempStateMap;
 
 class AddCityRoute extends StatelessWidget {
   const AddCityRoute({Key? key}) : super(key: key);
@@ -11,10 +14,9 @@ class AddCityRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add a city...'),
-      ),
-      body: DropDown(),
-    );
+        appBar: AppBar(
+          title: const Text('Add a city...'),
+        ),
+        body: Center(child: DropDown()));
   }
 }

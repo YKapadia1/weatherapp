@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'JSONList.dart';
+import 'send_request.dart';
 import 'add_city.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
@@ -80,15 +80,17 @@ class HomePage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                Map resp = await fetchData();
-                resp.forEach((status, data) {
-                  test2 = data;
+                Map resp = await fetchCountryData();
+                resp.forEach((status, cityData) {
+                  tempCountryMap = cityData;
                 });
                 for (int i = 0; i < 100; i++) {
-                  Map test = test2[i];
-                  listTest.add(test.values.toString());
-                  listTest[i] = listTest[i]
+                  Map listMap = tempCountryMap[i];
+                  countryList.add(listMap.values.toString());
+                  countryList[i] = countryList[i]
                       .replaceAll(RegExp(r"\p{P}", unicode: true), "");
+                  stateList.clear();
+                  stateList.add('null');
                 }
                 Navigator.push(
                     context,
