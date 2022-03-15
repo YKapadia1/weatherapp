@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'JSONList.dart';
-import 'drop_down.dart';
+import 'drop_down_country.dart';
+
+var test2;
+
+List<String> listTest = [];
 
 class AddCityRoute extends StatelessWidget {
   const AddCityRoute({Key? key}) : super(key: key);
@@ -13,15 +18,6 @@ class AddCityRoute extends StatelessWidget {
         title: const Text('Add a city...'),
       ),
       body: DropDown(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Map resp = await fetchData();
-          resp.forEach((data, country) {
-            print(country);
-          });
-        },
-        child: const Icon(Icons.web),
-      ),
     );
   }
 }

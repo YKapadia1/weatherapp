@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'JSONList.dart';
 import 'add_city.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
@@ -80,14 +81,23 @@ class HomePage extends StatelessWidget {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddCityRoute()));
-            },
-            child: const Icon(Icons.add_location),
-          ),
+              onPressed: () async {
+                Map resp = await fetchData();
+                resp.forEach((status, data) {
+                  test2 = data;
+                });
+                for (int i = 0; i < 100; i++) {
+                  Map test = test2[i];
+                  listTest.add(test.values.toString());
+                  listTest[i] = listTest[i]
+                      .replaceAll(new RegExp(r"\p{P}", unicode: true), "");
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddCityRoute()));
+              },
+              child: const Icon(Icons.add_location)),
         ));
   }
 }
