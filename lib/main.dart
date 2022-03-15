@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'add_city.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
@@ -98,59 +99,6 @@ class HomePage extends StatelessWidget {
             child: const Icon(Icons.add_location),
           ),
         ));
-  }
-}
-
-class DropDown extends StatefulWidget {
-  @override
-  DropDownWidget createState() => DropDownWidget();
-}
-
-class DropDownWidget extends State {
-  String? SelectedDropDownItem = 'Country One';
-  List<String> spinnerItems = [
-    'Country One',
-    'Country Two',
-    'Country Three',
-    'Country Four',
-    'Country Five'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: Column(
-      children: <Widget>[
-        DropdownButton<String>(
-          value: SelectedDropDownItem,
-          icon: Icon(Icons.arrow_drop_down),
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-          ),
-          underline: Container(
-            height: 2,
-            color: Colors.black,
-          ),
-          onChanged: (String? data) {
-            setState(() {
-              SelectedDropDownItem = data;
-            });
-          },
-          items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-        Text('Selected Item = ' '$SelectedDropDownItem',
-            style: TextStyle(fontSize: 22, color: Colors.black)),
-      ],
-    )));
   }
 }
 
