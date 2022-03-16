@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'send_request.dart';
 import 'add_city.dart';
+import 'package:sqflite/sqflite.dart';
+import 'my_theme.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
@@ -14,13 +16,15 @@ void main() {
 
 var responseText = 'test';
 
+var Theme = AppTheme.dark();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(home: HomePage(),theme: Theme,);
   }
 }
 
@@ -57,11 +61,11 @@ class HomePage extends StatelessWidget {
                   children: [
                     Text(
                       'No cities added',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.textTheme.headline4,
                     ),
                     Text(
                         'Tap the button in the bottom right to add a city and get started.',
-                        style: Theme.of(context).textTheme.headline5),
+                        style: Theme.textTheme.headline5),
                   ],
                 ),
               ),
@@ -70,9 +74,9 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('No favourite cities',
-                        style: Theme.of(context).textTheme.headline4),
+                        style: Theme.textTheme.headline4),
                     Text('Long press on a city to add it to your favourites.',
-                        style: Theme.of(context).textTheme.headline5),
+                        style: Theme.textTheme.headline5),
                   ],
                 ),
               ),
