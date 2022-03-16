@@ -8,21 +8,14 @@ class DropDown extends StatefulWidget {
   DropDownWidgets createState() => DropDownWidgets();
 }
 
-class DropDownWidgets extends State with TickerProviderStateMixin {
+class DropDownWidgets extends State {
   String? selectedCountry = countryList[0];
   String? selectedState;
   String? selectedCity;
 
-  late AnimationController controller;
 
   @override
   void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    )..addListener(() {
-        setState(() {});
-      });
     super.initState();
     (context as Element).reassemble();
   }
