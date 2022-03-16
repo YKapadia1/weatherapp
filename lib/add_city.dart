@@ -4,9 +4,8 @@ import 'drop_down.dart';
 List<String> countryList = [];
 List<String> stateList = ['null'];
 List<String> cityList = ['null'];
-var tempCountryMap;
 
-var tempStateMap;
+
 
 class AddCityRoute extends StatelessWidget {
   const AddCityRoute({Key? key}) : super(key: key);
