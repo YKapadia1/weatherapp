@@ -23,12 +23,12 @@ class AppTheme
     return ThemeData
     (brightness: Brightness.light,
       appBarTheme: const AppBarTheme(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
@@ -43,11 +43,11 @@ class AppTheme
       brightness: Brightness.dark,
       appBarTheme: const AppBarTheme(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
@@ -69,7 +69,7 @@ class AppTheme
     return TextStyle
     (
       color: Colors.white,
-      fontSize:18
+      fontSize:18,
     );
   }
 }
