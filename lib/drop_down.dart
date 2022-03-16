@@ -68,10 +68,6 @@ class DropDownWidgets extends State with TickerProviderStateMixin {
                         icon: Icon(Icons.arrow_drop_down),
                         iconSize: 24,
                         elevation: 16,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-),
                         onChanged: (String? data) {
                           setState(() async {
                             stateList[0] = 'null';
@@ -100,10 +96,6 @@ class DropDownWidgets extends State with TickerProviderStateMixin {
                           icon: Icon(Icons.arrow_drop_down),
                           iconSize: 24,
                           elevation: 16,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
                           onChanged: (String? data) {
                             setState(() {
                               cityList[0] = 'null';
@@ -131,10 +123,6 @@ class DropDownWidgets extends State with TickerProviderStateMixin {
                             icon: Icon(Icons.arrow_drop_down),
                             iconSize: 24,
                             elevation: 16,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                            ),
                             onChanged: (String? data) {
                               setState(() {
                                 selectedCity = data;
