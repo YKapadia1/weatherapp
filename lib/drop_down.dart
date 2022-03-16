@@ -71,7 +71,7 @@ class DropDownWidgets extends State with TickerProviderStateMixin {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                        ),
+),
                         onChanged: (String? data) {
                           setState(() async {
                             stateList[0] = 'null';
