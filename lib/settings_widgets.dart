@@ -20,8 +20,11 @@ class SettingsWidgets extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(children: <Widget>[
-        const Text("Dark Mode"),
+      body: Container(padding: EdgeInsets.all(8.0),
+        child: Row(
+        mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+        const Text("Dark Mode", style: TextStyle(fontSize: 24),),
         Switch.adaptive(
             value: widget.isDarkEnabled,
             activeColor: Colors.blue,
@@ -33,7 +36,7 @@ class SettingsWidgets extends State<Settings> {
                     : widget.themeNotifier.isDark = true;
               });
             })
-      ]),
+      ]),)
     );
   }
 }
