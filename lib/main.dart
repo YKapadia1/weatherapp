@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:weatherapp/dependencies/db_handler.dart';
 import 'package:weatherapp/dependencies/send_request.dart';
 import 'package:weatherapp/screens/add_city.dart';
@@ -16,6 +15,8 @@ const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 var tempCountryMap;
 var tempStateMap;
 
+int nullIndex = null as int;
+
 var request = http.MultipartRequest(
     'GET', Uri.parse('http://api.airvisual.com/v2/countries?key=' + apiKey));
 
@@ -23,7 +24,40 @@ void main() {
   runApp(const MyApp());
 }
 
-var responseText = 'test';
+Center noCities() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'No cities added',
+          style: TextStyle(fontSize: 34, color: Colors.grey),
+        ),
+        Text(
+            'Tap the button in the bottom right to add a city and get started.',
+            style: TextStyle(
+              fontSize: 24,
+            )),
+      ],
+    ),
+  );
+}
+
+Center noFavCities() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text('No favourite cities',
+            style: TextStyle(fontSize: 34, color: Colors.grey)),
+        Text('Long press on a city to add it to your favourites.',
+            style: TextStyle(
+              fontSize: 24,
+            )),
+      ],
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -55,7 +89,6 @@ class HomePage extends State {
   void initState() {
     super.initState();
     this.handler = DatabaseHandler();
-    this.handler.initializeDB();
   }
 
   @override
@@ -88,7 +121,7 @@ class HomePage extends State {
                         Tab(text: 'Favourites'),
                       ],
                     ),
-                    title: const Text('Home')),
+                    title: const Text('Your Cities')),
                 body: TabBarView(
                   children: [
                     Column(
@@ -99,83 +132,63 @@ class HomePage extends State {
                           builder: (BuildContext context,
                               AsyncSnapshot<List<Entry>> snapshot) {
                             if (snapshot.data?.length != null) {
-                              return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data?.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Dismissible(
-                                    direction: DismissDirection.endToStart,
-                                    background: Container(
-                                      color: Colors.red,
-                                      alignment: Alignment.centerRight,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      child: Icon(Icons.delete_forever),
-                                    ),
-                                    key: ValueKey<int>(
-                                        snapshot.data![index].id!),
-                                    onDismissed:
-                                        (DismissDirection direction) async {
-                                      await this.handler.deleteUserCity(
-                                          snapshot.data![index].id!);
-                                      setState(() {
-                                        snapshot.data!
-                                            .remove(snapshot.data![index]);
-                                      });
-                                    },
-                                    child: Card(
-                                        child: ListTile(
-                                      contentPadding: EdgeInsets.all(8.0),
-                                      title: Text(snapshot.data![index].cityName
-                                          .toString()),
-                                      subtitle: Text(snapshot
-                                              .data![index].stateName
-                                              .toString() +
-                                          ", " +
-                                          snapshot.data![index].countryName
-                                              .toString()),
-                                    )),
-                                  );
-                                },
-                              );
+                              if (snapshot.data?.length != 0) {
+                                return ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data?.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Dismissible(
+                                        direction: DismissDirection.endToStart,
+                                        background: Container(
+                                          color: Colors.red,
+                                          alignment: Alignment.centerRight,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Icon(Icons.delete_forever),
+                                        ),
+                                        key: ValueKey<int>(
+                                            snapshot.data![index].id!),
+                                        onDismissed:
+                                            (DismissDirection direction) async {
+                                          await this.handler.deleteUserCity(
+                                              snapshot.data![index].id!);
+                                          setState(() {
+                                            snapshot.data!
+                                                .remove(snapshot.data![index]);
+                                          });
+                                        },
+                                        child: GestureDetector(
+                                          onTap: () => print("Hello World!"),
+                                          child: Card(
+                                              child: ListTile(
+                                            contentPadding: EdgeInsets.all(8.0),
+                                            title: Text(snapshot
+                                                .data![index].cityName
+                                                .toString()),
+                                            subtitle: Text(snapshot
+                                                    .data![index].stateName
+                                                    .toString() +
+                                                ", " +
+                                                snapshot
+                                                    .data![index].countryName
+                                                    .toString()),
+                                          )),
+                                        ));
+                                  },
+                                );
+                              } else {
+                                return noCities();
+                              }
                             } else {
-                              return Center(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'No cities added',
-                                      style: TextStyle(
-                                          fontSize: 34, color: Colors.grey),
-                                    ),
-                                    Text(
-                                        'Tap the button in the bottom right to add a city and get started.',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                        )),
-                                  ],
-                                ),
-                              );
+                              return noCities();
                             }
                           },
                         )
                       ],
                     ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('No favourite cities',
-                              style:
-                                  TextStyle(fontSize: 34, color: Colors.grey)),
-                          Text(
-                              'Long press on a city to add it to your favourites.',
-                              style: TextStyle(
-                                fontSize: 24,
-                              )),
-                        ],
-                      ),
-                    ),
+                    noFavCities(),
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
@@ -195,8 +208,10 @@ class HomePage extends State {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AddCityRoute()));
-                      (context as Element).reassemble();
+                            builder: (context) => const AddCityRoute(),
+                          )).then((value) {
+                        (context as Element).reassemble();
+                      });
                     },
                     child: const Icon(Icons.add_location))));
       },
