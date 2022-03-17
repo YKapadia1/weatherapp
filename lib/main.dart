@@ -9,6 +9,8 @@ import 'package:weatherapp/screens/settings.dart';
 import 'package:weatherapp/dependencies/my_theme.dart';
 import 'package:weatherapp/dependencies/theme_model.dart';
 
+import 'entry_table_model.dart';
+
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
 var tempCountryMap;
@@ -63,85 +65,140 @@ class HomePage extends State {
         return DefaultTabController(
             length: 2,
             child: Scaffold(
-              appBar: AppBar(
-                  actions: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  SettingsRoute(themeNotifier),
-                            ));
-                          },
-                          child: Icon(
-                            Icons.settings,
-                            size: 26.0,
-                          ),
-                        )),
-                  ],
-                  bottom: const TabBar(
-                    tabs: [
-                      Tab(text: 'All'),
-                      Tab(text: 'Favourites'),
+                appBar: AppBar(
+                    actions: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    SettingsRoute(themeNotifier),
+                              ));
+                            },
+                            child: Icon(
+                              Icons.settings,
+                              size: 26.0,
+                            ),
+                          )),
                     ],
-                  ),
-                  title: const Text('Home')),
-              body: TabBarView(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No cities added',
-                          style: TextStyle(fontSize: 34, color: Colors.grey),
-                        ),
-                        Text(
-                            'Tap the button in the bottom right to add a city and get started.',
-                            style: TextStyle(
-                              fontSize: 24,
-                            )),
+                    bottom: const TabBar(
+                      tabs: [
+                        Tab(text: 'All'),
+                        Tab(text: 'Favourites'),
                       ],
                     ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    title: const Text('Home')),
+                body: TabBarView(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('No favourite cities',
-                            style: TextStyle(fontSize: 34, color: Colors.grey)),
-                        Text(
-                            'Long press on a city to add it to your favourites.',
-                            style: TextStyle(
-                              fontSize: 24,
-                            )),
+                        FutureBuilder(
+                          future: this.handler.getUserCities(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<Entry>> snapshot) {
+                            if (snapshot.data?.length != null) {
+                              return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Dismissible(
+                                    direction: DismissDirection.endToStart,
+                                    background: Container(
+                                      color: Colors.red,
+                                      alignment: Alignment.centerRight,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Icon(Icons.delete_forever),
+                                    ),
+                                    key: ValueKey<int>(
+                                        snapshot.data![index].id!),
+                                    onDismissed:
+                                        (DismissDirection direction) async {
+                                      await this.handler.deleteUserCity(
+                                          snapshot.data![index].id!);
+                                      setState(() {
+                                        snapshot.data!
+                                            .remove(snapshot.data![index]);
+                                      });
+                                    },
+                                    child: Card(
+                                        child: ListTile(
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      title: Text(snapshot.data![index].cityName
+                                          .toString()),
+                                      subtitle: Text(snapshot
+                                              .data![index].stateName
+                                              .toString() +
+                                          ", " +
+                                          snapshot.data![index].countryName
+                                              .toString()),
+                                    )),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'No cities added',
+                                      style: TextStyle(
+                                          fontSize: 34, color: Colors.grey),
+                                    ),
+                                    Text(
+                                        'Tap the button in the bottom right to add a city and get started.',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                        )),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                        )
                       ],
                     ),
-                  ),
-                ],
-              ),
-              floatingActionButton: FloatingActionButton(
-                  onPressed: () async {
-                    Map resp = await fetchCountryData();
-                    resp.forEach((status, cityData) {
-                      tempCountryMap = cityData;
-                    });
-                    for (int i = 0; i < 100; i++) {
-                      Map listMap = tempCountryMap[i];
-                      countryList.add(listMap.values.toString());
-                      countryList[i] = countryList[i]
-                          .replaceAll(RegExp(r"\p{P}", unicode: true), "");
-                      stateList.clear();
-                      stateList.add('null');
-                    }
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddCityRoute()));
-                  },
-                  child: const Icon(Icons.add_location)),
-            ));
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('No favourite cities',
+                              style:
+                                  TextStyle(fontSize: 34, color: Colors.grey)),
+                          Text(
+                              'Long press on a city to add it to your favourites.',
+                              style: TextStyle(
+                                fontSize: 24,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                    onPressed: () async {
+                      Map resp = await fetchCountryData();
+                      resp.forEach((status, cityData) {
+                        tempCountryMap = cityData;
+                      });
+                      for (int i = 0; i < 100; i++) {
+                        Map listMap = tempCountryMap[i];
+                        countryList.add(listMap.values.toString());
+                        countryList[i] = countryList[i]
+                            .replaceAll(RegExp(r"\p{P}", unicode: true), "");
+                        stateList.clear();
+                        stateList.add('null');
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddCityRoute()));
+                      (context as Element).reassemble();
+                    },
+                    child: const Icon(Icons.add_location))));
       },
     );
   }
