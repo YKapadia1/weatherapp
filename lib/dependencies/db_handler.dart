@@ -25,15 +25,13 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<List<Entry>> getUserCities() async 
-  {
-     final Database db = await initializeDB();
+  Future<List<Entry>> getUserCities() async {
+    final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities');
     return queryResult.map((e) => Entry.fromMap(e)).toList();
   }
 
-  Future<void> deleteUserCity(int id) async
-  {
+  Future<void> deleteUserCity(int id) async {
     final db = await initializeDB();
     await db.delete(
       'userCities',
