@@ -52,15 +52,21 @@ class DropDownWidgets extends State {
 
   Future getCities() async {
     final jsonMap = await fetchCityData(selectedState, selectedCountry);
-    List<Cities> temp =
-        (jsonMap['data'] as List).map((city) => Cities.fromJson(city)).toList();
-    for (int i = 0; i < temp.length; i++) {
-      if (i == 0) {
-        cityList.clear();
+    if (jsonMap.containsValue('fail')) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("An error occured while getting the cities.")));
+    } else {
+      List<Cities> temp = (jsonMap['data'] as List)
+          .map((city) => Cities.fromJson(city))
+          .toList();
+      for (int i = 0; i < temp.length; i++) {
+        if (i == 0) {
+          cityList.clear();
+        }
+        cityList.add(temp[i].city.toString());
       }
-      cityList.add(temp[i].city.toString());
+      (context as Element).reassemble();
     }
-    (context as Element).reassemble();
   }
 
   @override
