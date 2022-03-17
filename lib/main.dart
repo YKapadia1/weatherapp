@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -157,10 +159,25 @@ class HomePage extends State {
                                           setState(() {
                                             snapshot.data!
                                                 .remove(snapshot.data![index]);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "City successfully removed."),
+                                            ));
                                           });
                                         },
                                         child: GestureDetector(
                                           onTap: () => print("Hello World!"),
+                                          onLongPress: () =>
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                            content: Text(
+                                              "City added to favourites.",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            backgroundColor: Colors.black,
+                                          )),
                                           child: Card(
                                               child: ListTile(
                                             contentPadding: EdgeInsets.all(8.0),
@@ -193,25 +210,40 @@ class HomePage extends State {
                 ),
                 floatingActionButton: FloatingActionButton(
                     onPressed: () async {
-                      Map resp = await fetchCountryData();
-                      resp.forEach((status, cityData) {
-                        tempCountryMap = cityData;
-                      });
-                      for (int i = 0; i < 100; i++) {
-                        Map listMap = tempCountryMap[i];
-                        countryList.add(listMap.values.toString());
-                        countryList[i] = countryList[i]
-                            .replaceAll(RegExp(r"\p{P}", unicode: true), "");
-                        stateList.clear();
-                        stateList.add('null');
+                      try {
+                        final isConnected =
+                            await InternetAddress.lookup('google.com');
+                        if (isConnected.isNotEmpty &&
+                            isConnected[0].rawAddress.isNotEmpty) {
+                          Map resp = await fetchCountryData();
+                          resp.forEach((status, cityData) {
+                            tempCountryMap = cityData;
+                          });
+                          for (int i = 0; i < 100; i++) {
+                            Map listMap = tempCountryMap[i];
+                            countryList.add(listMap.values.toString());
+                            countryList[i] = countryList[i].replaceAll(
+                                RegExp(r"\p{P}", unicode: true), "");
+                            stateList.clear();
+                            stateList.add('null');
+                          }
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AddCityRoute(),
+                              )).then((value) {
+                            (context as Element).reassemble();
+                          });
+                        }
+                      } on SocketException catch (_) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            "You are not connected to the Internet.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.black,
+                        ));
                       }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddCityRoute(),
-                          )).then((value) {
-                        (context as Element).reassemble();
-                      });
                     },
                     child: const Icon(Icons.add_location))));
       },

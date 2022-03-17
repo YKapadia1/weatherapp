@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../entry_table_model.dart';
 import 'add_city.dart';
@@ -8,6 +10,19 @@ import 'package:weatherapp/dependencies/db_handler.dart';
 class DropDown extends StatefulWidget {
   @override
   DropDownWidgets createState() => DropDownWidgets();
+}
+
+TextStyle SnackbarTextStyle() {
+  return TextStyle(color: Colors.white);
+}
+
+SnackBar notConnectedSnackBar() {
+  return SnackBar(
+    content: Text("Cannot fetch data: You are not connected to the Internet.",
+        style: SnackbarTextStyle()),
+    duration: Duration(seconds: 3),
+    backgroundColor: Colors.black,
+  );
 }
 
 class DropDownWidgets extends State {
@@ -54,7 +69,10 @@ class DropDownWidgets extends State {
     final jsonMap = await fetchCityData(selectedState, selectedCountry);
     if (jsonMap.containsValue('fail')) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("An error occured while getting the cities.")));
+        content: Text("An error occured while getting the cities.",
+            style: SnackbarTextStyle()),
+        backgroundColor: Colors.black,
+      ));
     } else {
       List<Cities> temp = (jsonMap['data'] as List)
           .map((city) => Cities.fromJson(city))
@@ -87,10 +105,20 @@ class DropDownWidgets extends State {
                             stateList[0] = 'null';
                             (context as Element).reassemble();
                             selectedCountry = data;
-                            getStates();
-                            selectedState = null;
-                            selectedCity = null;
-                            cityList[0] = 'null';
+                            try {
+                              final isConnected =
+                                  await InternetAddress.lookup('google.com');
+                              if (isConnected.isNotEmpty &&
+                                  isConnected[0].rawAddress.isNotEmpty) {
+                                getStates();
+                                selectedState = null;
+                                selectedCity = null;
+                                cityList[0] = 'null';
+                              }
+                            } on SocketException catch (_) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(notConnectedSnackBar());
+                            }
                           });
                         },
                         items: countryList
@@ -111,13 +139,23 @@ class DropDownWidgets extends State {
                           iconSize: 24,
                           elevation: 16,
                           onChanged: (String? data) {
-                            setState(() {
+                            setState(() async {
                               cityList[0] = 'null';
                               (context as Element).reassemble();
                               selectedState = data;
-                              getCities();
-                              selectedCity = null;
-                              print(cityList);
+                              try {
+                                final isConnected =
+                                    await InternetAddress.lookup('google.com');
+                                if (isConnected.isNotEmpty &&
+                                    isConnected[0].rawAddress.isNotEmpty) {
+                                  getCities();
+                                  selectedCity = null;
+                                  print(cityList);
+                                }
+                              } on SocketException catch (_) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(notConnectedSnackBar());
+                              }
                             });
                           },
                           items: stateList
@@ -153,9 +191,15 @@ class DropDownWidgets extends State {
                                 InputDecoration(labelText: "Select a city...")),
                         if (selectedCity != null) ...[
                           ElevatedButton(
-                              onPressed: (() {
+                              onPressed: (() async {
                                 addUserCity(selectedCity, selectedState,
                                     selectedCountry);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("City successfully added!",
+                                      style: SnackbarTextStyle()),
+                                  backgroundColor: Colors.black,
+                                ));
                                 Navigator.pop(context);
                               }),
                               child: const Text("Add City"))
