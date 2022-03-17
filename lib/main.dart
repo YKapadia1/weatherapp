@@ -1,12 +1,13 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'send_request.dart';
-import 'add_city.dart';
 import 'package:sqflite/sqflite.dart';
-import 'my_theme.dart';
-import 'settings.dart';
-import 'theme_model.dart';
+import 'package:weatherapp/dependencies/db_handler.dart';
+import 'package:weatherapp/dependencies/send_request.dart';
+import 'package:weatherapp/screens/add_city.dart';
+import 'package:weatherapp/screens/settings.dart';
+import 'package:weatherapp/dependencies/my_theme.dart';
+import 'package:weatherapp/dependencies/theme_model.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
@@ -33,14 +34,28 @@ class MyApp extends StatelessWidget {
         child: Consumer<ThemeModel>(
             builder: (context, ThemeModel themeNotifier, child) {
           return MaterialApp(
-            home: HomePage(),
+            home: HomePageState(),
             theme: themeNotifier.isDark ? AppTheme.dark() : AppTheme.light(),
           );
         }));
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePageState extends StatefulWidget {
+  @override
+  HomePage createState() => HomePage();
+}
+
+class HomePage extends State {
+  late DatabaseHandler handler;
+
+  @override
+  void initState() {
+    super.initState();
+    this.handler = DatabaseHandler();
+    this.handler.initializeDB();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
@@ -54,7 +69,10 @@ class HomePage extends StatelessWidget {
                         padding: EdgeInsets.only(right: 20.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsRoute(themeNotifier),));
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  SettingsRoute(themeNotifier),
+                            ));
                           },
                           child: Icon(
                             Icons.settings,
