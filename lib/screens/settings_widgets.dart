@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'theme_model.dart';
+import 'package:weatherapp/dependencies/theme_model.dart';
 
 late SharedPreferences prefs;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'drop_down.dart';
+import 'package:weatherapp/screens/drop_down.dart';
 
 List<String> countryList = [];
 List<String> stateList = ['null'];

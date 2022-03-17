@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp/settings_widgets.dart';
-import 'package:weatherapp/theme_model.dart';
+import 'package:weatherapp/screens/settings_widgets.dart';
+import 'package:weatherapp/dependencies/theme_model.dart';
 import 'drop_down.dart';
 
 class SettingsRoute extends StatelessWidget {
