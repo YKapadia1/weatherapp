@@ -90,4 +90,13 @@ class AppTheme {
         content: Text(snackBarText, style: darkText()),
         backgroundColor: Colors.black);
   }
+
+  static Container DismissibleContainer() {
+    return Container(
+      color: Colors.red,
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Icon(Icons.delete_forever),
+    );
+  }
 }
