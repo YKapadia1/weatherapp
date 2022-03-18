@@ -9,6 +9,7 @@ import 'package:weatherapp/screens/add_city.dart';
 import 'package:weatherapp/screens/settings.dart';
 import 'package:weatherapp/dependencies/my_theme.dart';
 import 'package:weatherapp/dependencies/theme_model.dart';
+import 'package:weatherapp/screens/weather_details.dart';
 
 import 'entry_table_model.dart';
 
@@ -170,7 +171,12 @@ class HomePage extends State {
                                           });
                                         },
                                         child: GestureDetector(
-                                          onTap: () => print("Hello World!"),
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WeatherDetailsRoute()));
+                                          },
                                           onLongPress: () =>
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
