@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:weatherapp/entry_table_model.dart';
 
-class DatabaseHandler {
+class AllCitiesDatabaseHandler {
   Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
     return openDatabase(
