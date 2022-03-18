@@ -25,9 +25,26 @@ class AllCitiesDatabaseHandler {
     return result;
   }
 
+  Future<int> setFavCityNonRaw(Entry userCitySelection, int newFavValue) async {
+    int result = 0;
+    userCitySelection.isFavourite = newFavValue;
+    final Database db = await initializeDB();
+    result = await db.update('userCities', userCitySelection.toMap(),
+        where: 'id = ?', whereArgs: [userCitySelection.id]);
+    return result;
+  }
+
   Future<List<Entry>> getUserCities() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities');
+    return queryResult.map((e) => Entry.fromMap(e)).toList();
+  }
+
+  Future<List<Entry>> getFavUserCities() async {
+    final Database db = await initializeDB();
+    final List<Map<String, Object?>> queryResult =
+        await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
+    print(queryResult.map((e) => toString()));
     return queryResult.map((e) => Entry.fromMap(e)).toList();
   }
 

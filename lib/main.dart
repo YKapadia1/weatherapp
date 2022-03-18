@@ -21,6 +21,7 @@ var tempStateMap;
 const String NOT_CONNECTED = "You are not connected to the Internet.";
 const String CITY_REMOVED = "City successfully removed.";
 const String ADDED_FAV = "City added to favourites.";
+const String REMOVED_FAV = "City removed from favourites.";
 
 var request = http.MultipartRequest(
     'GET', Uri.parse('http://api.airvisual.com/v2/countries?key=' + apiKey));
@@ -146,13 +147,8 @@ class HomePage extends State {
                                       (BuildContext context, int index) {
                                     return Dismissible(
                                         direction: DismissDirection.endToStart,
-                                        background: Container(
-                                          color: Colors.red,
-                                          alignment: Alignment.centerRight,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Icon(Icons.delete_forever),
-                                        ),
+                                        background:
+                                            AppTheme.DismissibleContainer(),
                                         key: ValueKey<int>(
                                             snapshot.data![index].id!),
                                         onDismissed:
@@ -177,11 +173,31 @@ class HomePage extends State {
                                                     builder: (context) =>
                                                         WeatherDetailsRoute()));
                                           },
-                                          onLongPress: () =>
+                                          onLongPress: () {
+                                            if (snapshot
+                                                    .data![index].isFavourite ==
+                                                0) {
+                                              this
+                                                  .allCitiesDBHandler
+                                                  .setFavCityNonRaw(
+                                                      snapshot.data![index], 1);
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                       AppTheme.DefaultSnackBar(
-                                                          ADDED_FAV)),
+                                                          ADDED_FAV));
+                                              setState(() {});
+                                            } else {
+                                              this
+                                                  .allCitiesDBHandler
+                                                  .setFavCityNonRaw(
+                                                      snapshot.data![index], 0);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                      AppTheme.DefaultSnackBar(
+                                                          REMOVED_FAV));
+                                              setState(() {});
+                                            }
+                                          },
                                           child: Card(
                                               child: ListTile(
                                             contentPadding: EdgeInsets.all(8.0),
@@ -209,7 +225,62 @@ class HomePage extends State {
                         )
                       ],
                     ),
-                    noFavCities(),
+                    FutureBuilder(
+                      future: this.allCitiesDBHandler.getFavUserCities(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Entry>> snapshot) {
+                        if (snapshot.data?.length != null) {
+                          if (snapshot.data?.length != 0) {
+                            return ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: snapshot.data?.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Dismissible(
+                                    direction: DismissDirection.endToStart,
+                                    background: AppTheme.DismissibleContainer(),
+                                    key: UniqueKey(),
+                                    onDismissed:
+                                        (DismissDirection direction) async {
+                                      this.allCitiesDBHandler.setFavCityNonRaw(
+                                          snapshot.data![index], 0);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              AppTheme.DefaultSnackBar(
+                                                  REMOVED_FAV));
+                                      setState(() {});
+                                    },
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    WeatherDetailsRoute()));
+                                      },
+                                      child: Card(
+                                          child: ListTile(
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        title: Text(snapshot
+                                            .data![index].cityName
+                                            .toString()),
+                                        subtitle: Text(snapshot
+                                                .data![index].stateName
+                                                .toString() +
+                                            ", " +
+                                            snapshot.data![index].countryName
+                                                .toString()),
+                                      )),
+                                    ));
+                              },
+                            );
+                          } else {
+                            return noFavCities();
+                          }
+                        } else {
+                          return noFavCities();
+                        }
+                      },
+                    )
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
