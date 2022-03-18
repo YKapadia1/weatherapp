@@ -144,7 +144,6 @@ class DropDownWidgets extends State {
                                     isConnected[0].rawAddress.isNotEmpty) {
                                   getCities();
                                   selectedCity = null;
-                                  print(cityList);
                                 }
                               } on SocketException catch (_) {
                                 ScaffoldMessenger.of(context).showSnackBar(
