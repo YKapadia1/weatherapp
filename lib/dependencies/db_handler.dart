@@ -44,7 +44,6 @@ class AllCitiesDatabaseHandler {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult =
         await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
-    print(queryResult.map((e) => toString()));
     return queryResult.map((e) => Entry.fromMap(e)).toList();
   }
 
