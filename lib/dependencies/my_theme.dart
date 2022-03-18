@@ -87,8 +87,10 @@ class AppTheme {
 
   static SnackBar DefaultSnackBar(String snackBarText) {
     return SnackBar(
-        content: Text(snackBarText, style: darkText()),
-        backgroundColor: Colors.black);
+      content: Text(snackBarText, style: darkText()),
+      backgroundColor: Colors.black,
+      duration: Duration(seconds: 2),
+    );
   }
 
   static Container DismissibleContainer() {
