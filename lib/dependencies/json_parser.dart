@@ -1,10 +1,10 @@
-class test {
+class JSONLayout {
   String? status;
   List<States>? data;
 
-  test({this.status, this.data});
+  JSONLayout({this.status, this.data});
 
-  test.fromJson(Map<String, dynamic> json) {
+  JSONLayout.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <States>[];
