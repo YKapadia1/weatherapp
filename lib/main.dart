@@ -17,7 +17,9 @@ const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 var tempCountryMap;
 var tempStateMap;
 
-int nullIndex = null as int;
+const String NOT_CONNECTED = "You are not connected to the Internet.";
+const String CITY_REMOVED = "City successfully removed.";
+const String ADDED_FAV = "City added to favourites.";
 
 var request = http.MultipartRequest(
     'GET', Uri.parse('http://api.airvisual.com/v2/countries?key=' + apiKey));
@@ -85,12 +87,12 @@ class HomePageState extends StatefulWidget {
 }
 
 class HomePage extends State {
-  late DatabaseHandler handler;
+  late AllCitiesDatabaseHandler allCitiesDBHandler;
 
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
+    this.allCitiesDBHandler = AllCitiesDatabaseHandler();
   }
 
   @override
@@ -130,7 +132,7 @@ class HomePage extends State {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         FutureBuilder(
-                          future: this.handler.getUserCities(),
+                          future: this.allCitiesDBHandler.getUserCities(),
                           builder: (BuildContext context,
                               AsyncSnapshot<List<Entry>> snapshot) {
                             if (snapshot.data?.length != null) {
@@ -154,30 +156,26 @@ class HomePage extends State {
                                             snapshot.data![index].id!),
                                         onDismissed:
                                             (DismissDirection direction) async {
-                                          await this.handler.deleteUserCity(
-                                              snapshot.data![index].id!);
+                                          await this
+                                              .allCitiesDBHandler
+                                              .deleteUserCity(
+                                                  snapshot.data![index].id!);
                                           setState(() {
                                             snapshot.data!
                                                 .remove(snapshot.data![index]);
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "City successfully removed."),
-                                            ));
+                                                .showSnackBar(
+                                                    AppTheme.DefaultSnackBar(
+                                                        CITY_REMOVED));
                                           });
                                         },
                                         child: GestureDetector(
                                           onTap: () => print("Hello World!"),
                                           onLongPress: () =>
                                               ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                            content: Text(
-                                              "City added to favourites.",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            backgroundColor: Colors.black,
-                                          )),
+                                                  .showSnackBar(
+                                                      AppTheme.DefaultSnackBar(
+                                                          ADDED_FAV)),
                                           child: Card(
                                               child: ListTile(
                                             contentPadding: EdgeInsets.all(8.0),
@@ -236,13 +234,8 @@ class HomePage extends State {
                           });
                         }
                       } on SocketException catch (_) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            "You are not connected to the Internet.",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: Colors.black,
-                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            AppTheme.DefaultSnackBar(NOT_CONNECTED));
                       }
                     },
                     child: const Icon(Icons.add_location))));

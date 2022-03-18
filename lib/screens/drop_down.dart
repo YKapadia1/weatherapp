@@ -1,11 +1,16 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:weatherapp/dependencies/my_theme.dart';
 import '../entry_table_model.dart';
 import 'add_city.dart';
 import 'package:weatherapp/dependencies/send_request.dart';
 import 'package:weatherapp/dependencies/json_parser.dart';
 import 'package:weatherapp/dependencies/db_handler.dart';
+
+const String CITY_DATA_ERR = "An error occured while fetching cities.";
+const String DATA_ERR_NOT_CONNECTED =
+    "Cannot fetch data: You are not connected to the Internet.";
+const String CITY_ADDED = "City successfully added!";
 
 class DropDown extends StatefulWidget {
   @override
@@ -16,25 +21,16 @@ TextStyle SnackbarTextStyle() {
   return TextStyle(color: Colors.white);
 }
 
-SnackBar notConnectedSnackBar() {
-  return SnackBar(
-    content: Text("Cannot fetch data: You are not connected to the Internet.",
-        style: SnackbarTextStyle()),
-    duration: Duration(seconds: 3),
-    backgroundColor: Colors.black,
-  );
-}
-
 class DropDownWidgets extends State {
   String? selectedCountry = countryList[0];
   String? selectedState;
   String? selectedCity;
-  late DatabaseHandler handler;
+  late AllCitiesDatabaseHandler handler;
 
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHandler();
+    this.handler = AllCitiesDatabaseHandler();
     this.handler.initializeDB();
     (context as Element).reassemble();
   }
@@ -68,11 +64,8 @@ class DropDownWidgets extends State {
   Future getCities() async {
     final jsonMap = await fetchCityData(selectedState, selectedCountry);
     if (jsonMap.containsValue('fail')) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("An error occured while getting the cities.",
-            style: SnackbarTextStyle()),
-        backgroundColor: Colors.black,
-      ));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(AppTheme.DefaultSnackBar(CITY_DATA_ERR));
     } else {
       List<Cities> temp = (jsonMap['data'] as List)
           .map((city) => Cities.fromJson(city))
@@ -116,8 +109,9 @@ class DropDownWidgets extends State {
                                 cityList[0] = 'null';
                               }
                             } on SocketException catch (_) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(notConnectedSnackBar());
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  AppTheme.DefaultSnackBar(
+                                      DATA_ERR_NOT_CONNECTED));
                             }
                           });
                         },
@@ -153,8 +147,9 @@ class DropDownWidgets extends State {
                                   print(cityList);
                                 }
                               } on SocketException catch (_) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(notConnectedSnackBar());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    AppTheme.DefaultSnackBar(
+                                        DATA_ERR_NOT_CONNECTED));
                               }
                             });
                           },
@@ -194,12 +189,8 @@ class DropDownWidgets extends State {
                               onPressed: (() async {
                                 addUserCity(selectedCity, selectedState,
                                     selectedCountry);
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("City successfully added!",
-                                      style: SnackbarTextStyle()),
-                                  backgroundColor: Colors.black,
-                                ));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    AppTheme.DefaultSnackBar(CITY_ADDED));
                                 Navigator.pop(context);
                               }),
                               child: const Text("Add City"))
