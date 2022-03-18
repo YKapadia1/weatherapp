@@ -3,9 +3,9 @@ class Entry {
   final String? cityName;
   final String? stateName;
   final String? countryName;
-  final int isFavourite;
+  late int isFavourite;
 
-  const Entry({
+  Entry({
     this.id,
     required this.cityName,
     required this.stateName,
@@ -16,14 +16,14 @@ class Entry {
   // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
   Entry.fromMap(Map<String, dynamic> res)
       : id = res['id'],
-      cityName = res['cityName'],
+        cityName = res['cityName'],
         stateName = res['stateName'],
         countryName = res['countryName'],
         isFavourite = res['isFavourite'];
 
   Map<String, Object?> toMap() {
     return {
-      'id':id,
+      'id': id,
       'cityName': cityName,
       'stateName': stateName,
       'countryName': countryName,
