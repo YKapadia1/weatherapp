@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-var icon_01d = Image.asset("image_assets/01d.png");
+var icon_01d = Image.asset("image_assets/01d.png", width: 100, height: 100);
 var icon_01n = Image.asset("image_assets/01n.png");
 var icon_02d = Image.asset("image_assets/02d.png");
 var icon_02n = Image.asset("image_assets/02n.png");
@@ -12,3 +12,4 @@ var icon_10n = Image.asset("image_assets/10n.png");
 var icon_11d = Image.asset("image_assets/11d.png");
 var icon_13d = Image.asset("image_assets/13d.png");
 var icon_50d = Image.asset("image_assets/50d.png");
+var clear_sky = AssetImage("image_assets/clear-sky.jpg");
