@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:weatherapp/entry_table_model.dart';
 
-class AllCitiesDatabaseHandler {
+class DatabaseHandler {
   Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
     return openDatabase(
@@ -25,7 +25,7 @@ class AllCitiesDatabaseHandler {
     return result;
   }
 
-  Future<int> setFavCityNonRaw(Entry userCitySelection, int newFavValue) async {
+  Future<int> setFavCity(Entry userCitySelection, int newFavValue) async {
     int result = 0;
     userCitySelection.isFavourite = newFavValue;
     final Database db = await initializeDB();
