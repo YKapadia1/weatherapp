@@ -101,4 +101,8 @@ class AppTheme {
       child: Icon(Icons.delete_forever),
     );
   }
+
+  static TextStyle WeatherDetailsTextStyle(double textSize) {
+    return TextStyle(color: Colors.white, fontSize: textSize);
+  }
 }
