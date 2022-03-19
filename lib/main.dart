@@ -153,7 +153,8 @@ class HomePage extends State {
                                         child: GestureDetector(
                                           onTap: () 
                                           {
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute()));
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => 
+                                            WeatherDetailsRoute(snapshot.data![index].cityName,snapshot.data![index].stateName,snapshot.data![index].countryName,snapshot.data![index].isFavourite)));
                                           },
                                           onLongPress: () {
                                             if (snapshot.data![index].isFavourite == 0) //If the city that has been long pressed is not favourited...
@@ -220,7 +221,8 @@ class HomePage extends State {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    WeatherDetailsRoute()));
+                                                    WeatherDetailsRoute
+                                                    (snapshot.data![index].cityName,snapshot.data![index].stateName,snapshot.data![index].countryName,snapshot.data![index].isFavourite)));
                                       },
                                       child: Card(
                                           child: ListTile(
