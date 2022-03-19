@@ -12,25 +12,35 @@ Future<Map> fetchCountryData() async {
 }
 
 Future<Map> fetchStateData(var selectedCountry) async {
-  final queryParameters = {
-    'country': selectedCountry,
-    'key': '769abfc9-64d7-4050-8cd3-79aecfda4830'
-  };
+  final queryParameters = {'country': selectedCountry, 'key': apiKey};
   final uri = Uri.https('api.airvisual.com', '/v2/states', queryParameters);
   final response = await http.get(uri);
   final responseJson = jsonDecode(response.body);
   return responseJson;
 }
 
-
 Future<Map> fetchCityData(var selectedState, var selectedCountry) async {
   final queryParameters = {
-    'state' : selectedState,
+    'state': selectedState,
     'country': selectedCountry,
-    'key': '769abfc9-64d7-4050-8cd3-79aecfda4830'
+    'key': apiKey
   };
   final uri = Uri.https('api.airvisual.com', '/v2/cities', queryParameters);
   final response = await http.get(uri);
   final responseJson = jsonDecode(response.body);
+  return responseJson;
+}
+
+Future<Map> fetchWeatherData(
+    var selectedCity, var selectedState, var selectedCountry) async {
+  final queryParameters = {
+    'city': selectedCity,
+    'state': selectedState,
+    'country': selectedCountry,
+    'key': apiKey
+  };
+  final uri = Uri.https('api.airvisual.com', '/v2/city', queryParameters);
+  final response = await http.get(uri);
+  final responseJson = jsonDecode(response.body)['data'];
   return responseJson;
 }
