@@ -30,20 +30,20 @@ class WeatherDetailsRoute extends StatelessWidget {
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
                 onTap: () {
-                  if (this.isFavourite == 1) {
+                  if (this.isFavourite == 1) 
+                  {
                     isFavourite = 0;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        AppTheme.DefaultSnackBar(
-                            "City removed from favourites."));
-                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar( "City removed from favourites."));
+                  } 
+                  else 
+                  {
                     isFavourite = 1;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        AppTheme.DefaultSnackBar("City added to favourites."));
+                    ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar("City added to favourites."));
                   }
                   (context as Element).reassemble();
                 },
                 child: Icon(
-                  (isFavourite == 1) ? Icons.favorite : Icons.favorite_outline,
+                  (this.isFavourite == 1) ? Icons.favorite : Icons.favorite_outline,
                   size: 26.0,
                 )),
           )
@@ -52,49 +52,45 @@ class WeatherDetailsRoute extends StatelessWidget {
           future: getWeather(),
           builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
             if (snapshot.hasData) {
-              var iconPath =
-                  ICON_DIR + snapshot.data!['ic'].toString() + ".png";
+              var iconPath = ICON_DIR + snapshot.data!['ic'].toString() + ".png";
               var weather_icon = Image.asset(
                 iconPath,
                 width: 100,
                 height: 100,
               );
-              var backgroundPath =
-                  BACKGROUND_DIR + snapshot.data!['ic'].toString() + ".jpg";
+              var backgroundPath = BACKGROUND_DIR + snapshot.data!['ic'].toString() + ".jpg";
               var weather_background = AssetImage(backgroundPath);
 
               return Container(
                 alignment: Alignment.topCenter,
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: weather_background, fit: BoxFit.cover)),
+                    image: DecorationImage(image: weather_background, fit: BoxFit.cover)), 
+                    //The background image will change depending on the weather in the city. For example, if it is sunny, it will show a clear blue sky.
+                    //If it is cloudy, the background image will be clouds.
                 child: Column(
                   children: <Widget>[
                     Text(
                       this.cityName.toString(),
-                      style: AppTheme.WeatherDetailsTextStyle(34),
+                      style: AppTheme.weatherDetailsTextStyle(34),
                     ),
                     Text(
-                      this.stateName.toString() +
-                          ", " +
-                          this.countryName.toString(),
-                      style: AppTheme.WeatherDetailsTextStyle(24),
+                      this.stateName.toString() +  ", " + this.countryName.toString(),
+                      style: AppTheme.weatherDetailsTextStyle(24),
                     ),
                     weather_icon,
                     RichText(
                         text: TextSpan(
-                            style: AppTheme.WeatherDetailsTextStyle(48),
+                            style: AppTheme.weatherDetailsTextStyle(48),
                             children: [
                           TextSpan(text: snapshot.data!['tp'].toString()),
                           WidgetSpan(
-                              child: Transform.translate(
+                            child: Transform.translate(
                             offset: const Offset(0.0, -28.0),
-                            child: Text("o",
-                                style: AppTheme.WeatherDetailsTextStyle(24)),
+                            child: Text("o",style: AppTheme.weatherDetailsTextStyle(24)),
                           )),
                           TextSpan(
                               text: "C",
-                              style: AppTheme.WeatherDetailsTextStyle(48))
+                              style: AppTheme.weatherDetailsTextStyle(48))
                         ]))
                   ],
                 ),
