@@ -25,12 +25,12 @@ class DropDownWidgets extends State {
   String? selectedCountry = countryList[0];
   String? selectedState;
   String? selectedCity;
-  late AllCitiesDatabaseHandler handler;
+  late DatabaseHandler handler;
 
   @override
   void initState() {
     super.initState();
-    this.handler = AllCitiesDatabaseHandler();
+    this.handler = DatabaseHandler();
     this.handler.initializeDB();
     (context as Element).reassemble();
   }
