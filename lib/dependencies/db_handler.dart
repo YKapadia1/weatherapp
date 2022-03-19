@@ -7,10 +7,9 @@ class DatabaseHandler {
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'userCities.db'),
-      onCreate: (database, version) async {
-        await database.execute(
-          "CREATE TABLE userCities(id INTEGER PRIMARY KEY AUTOINCREMENT, cityName TEXT NOT NULL,stateName TEXT NOT NULL, countryName TEXT NOT NULL, isFavourite INTEGER NOT NULL)",
-        );
+      onCreate: (database, version) async 
+      {
+        await database.execute("CREATE TABLE userCities(id INTEGER PRIMARY KEY AUTOINCREMENT, cityName TEXT NOT NULL,stateName TEXT NOT NULL, countryName TEXT NOT NULL, isFavourite INTEGER NOT NULL)",);
       },
       version: 1,
     );
@@ -19,7 +18,8 @@ class DatabaseHandler {
   Future<int> insertUserCity(List<Entry> userCitySelection) async {
     int result = 0;
     final Database db = await initializeDB();
-    for (var cityName in userCitySelection) {
+    for (var cityName in userCitySelection) 
+    {
       result = await db.insert('userCities', cityName.toMap());
     }
     return result;
@@ -29,8 +29,7 @@ class DatabaseHandler {
     int result = 0;
     userCitySelection.isFavourite = newFavValue;
     final Database db = await initializeDB();
-    result = await db.update('userCities', userCitySelection.toMap(),
-        where: 'id = ?', whereArgs: [userCitySelection.id]);
+    result = await db.update('userCities', userCitySelection.toMap(), where: 'id = ?', whereArgs: [userCitySelection.id]);
     return result;
   }
 
@@ -42,8 +41,7 @@ class DatabaseHandler {
 
   Future<List<Entry>> getFavUserCities() async {
     final Database db = await initializeDB();
-    final List<Map<String, Object?>> queryResult =
-        await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
+    final List<Map<String, Object?>> queryResult = await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
     return queryResult.map((e) => Entry.fromMap(e)).toList();
   }
 

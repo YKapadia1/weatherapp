@@ -6,9 +6,11 @@ class JSONLayout {
 
   JSONLayout.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['data'] != null) {
+    if (json['data'] != null) 
+    {
       data = <States>[];
-      json['data'].forEach((v) {
+      json['data'].forEach((v) 
+      {
         data!.add(new States.fromJson(v));
       });
     }
@@ -17,7 +19,8 @@ class JSONLayout {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    if (this.data != null) {
+    if (this.data != null) 
+    {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
@@ -29,7 +32,8 @@ class States {
 
   States({this.state});
 
-  States.fromJson(Map<String, dynamic> json) {
+  States.fromJson(Map<String, dynamic> json) 
+  {
     state = json['state'];
   }
 
@@ -45,7 +49,8 @@ class Cities {
 
   Cities({this.city});
 
-  Cities.fromJson(Map<String, dynamic> json) {
+  Cities.fromJson(Map<String, dynamic> json) 
+  {
     city = json['city'];
   }
 
