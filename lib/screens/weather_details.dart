@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp/dependencies/send_request.dart';
 import 'package:weatherapp/dependencies/my_theme.dart';
-import 'package:weatherapp/dependencies/json_parser.dart';
-import 'package:weatherapp/dependencies/db_handler.dart';
-import 'package:weatherapp/entry_table_model.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
