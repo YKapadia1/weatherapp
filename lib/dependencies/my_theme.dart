@@ -73,36 +73,38 @@ class AppTheme {
     );
   }
 
-  static TextStyle lightText() {
-    return TextStyle(
-      color: Colors.black,
-    );
+  static TextStyle lightText() //The text style to be used when in light mode.
+  {
+    return const TextStyle(color: Colors.black,);
   }
 
-  static TextStyle darkText() {
-    return TextStyle(
-      color: Colors.white,
-    );
+  static TextStyle darkText() //The text style to be used when in dark mode.
+  {
+    return const TextStyle(color: Colors.white,);
   }
 
-  static SnackBar DefaultSnackBar(String snackBarText) {
+  static SnackBar defaultSnackBar(String snackBarText) //A snackbar that takes a string parameter that displays a message to the user at the bottom of the screen.
+  //This was done to avoid repeating code.
+  {
     return SnackBar(
       content: Text(snackBarText, style: darkText()),
       backgroundColor: Colors.black,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
   }
 
-  static Container DismissibleContainer() {
+  static Container dismissibleContainer() //A dismissible container that the user sees when they swipe to remove the Dismissible object.
+  //This is done to avoid repeating code.
+  {
     return Container(
       color: Colors.red,
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: Icon(Icons.delete_forever),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: const Icon(Icons.delete_forever),
     );
   }
 
-  static TextStyle WeatherDetailsTextStyle(double textSize) {
+  static TextStyle weatherDetailsTextStyle(double textSize) {
     return TextStyle(color: Colors.white, fontSize: textSize);
   }
 }
