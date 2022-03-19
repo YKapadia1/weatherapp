@@ -7,18 +7,16 @@ import 'package:weatherapp/dependencies/send_request.dart';
 import 'package:weatherapp/dependencies/json_parser.dart';
 import 'package:weatherapp/dependencies/db_handler.dart';
 
-const String CITY_DATA_ERR = "An error occured while fetching cities.";
-const String DATA_ERR_NOT_CONNECTED = "Cannot fetch data: You are not connected to the Internet.";
-const String CITY_ADDED = "City successfully added!";
+const String cityDataErr = "An error occured while fetching cities.";
+const String dataErrNotConnected = "Cannot fetch data: You are not connected to the Internet.";
+const String cityAdded = "City successfully added!";
 
-class DropDown extends StatefulWidget {
+class DropDown extends StatefulWidget 
+{
   @override
   DropDownWidgets createState() => DropDownWidgets();
 }
 
-TextStyle SnackbarTextStyle() {
-  return TextStyle(color: Colors.white);
-}
 
 class DropDownWidgets extends State {
   String? selectedCountry = countryList[0];
@@ -27,7 +25,8 @@ class DropDownWidgets extends State {
   late DatabaseHandler handler;
 
   @override
-  void initState() {
+  void initState() 
+  {
     super.initState();
     this.handler = DatabaseHandler();
     this.handler.initializeDB();
@@ -61,7 +60,7 @@ class DropDownWidgets extends State {
   Future getCities() async {
     final jsonMap = await fetchCityData(selectedState, selectedCountry);
     if (jsonMap.containsValue('fail')) {
-      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(CITY_DATA_ERR));
+      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr));
     } else {
       List<Cities> temp = (jsonMap['data'] as List).map((city) => Cities.fromJson(city)).toList();
       for (int i = 0; i < temp.length; i++) {
@@ -111,7 +110,7 @@ class DropDownWidgets extends State {
                             {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   AppTheme.defaultSnackBar(
-                                      DATA_ERR_NOT_CONNECTED));
+                                      dataErrNotConnected));
                             }
                           });
                         },
@@ -147,7 +146,7 @@ class DropDownWidgets extends State {
                                 }
                               } 
                               on SocketException catch (_) {
-                                ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(DATA_ERR_NOT_CONNECTED));
+                                ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(dataErrNotConnected));
                               }
                             });
                           },
@@ -188,7 +187,7 @@ class DropDownWidgets extends State {
                               {
                                 addUserCity(selectedCity, selectedState,selectedCountry); //Call the addUserCity function with the parameters supplied.
                                 //This will add the user's selection to the database.
-                                ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(CITY_ADDED));
+                                ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityAdded));
                                 //Show a snackbar indicating the city has been added.
                                 Navigator.pop(context); //Go back to the main screen.
                               }),
