@@ -17,10 +17,10 @@ const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 var tempCountryMap;
 var tempStateMap;
 
-const String NOT_CONNECTED = "You are not connected to the Internet.";
-const String CITY_REMOVED = "City successfully removed.";
-const String ADDED_FAV = "City added to favourites.";
-const String REMOVED_FAV = "City removed from favourites.";
+const String notConnected = "You are not connected to the Internet.";
+const String cityRemoved = "City successfully removed.";
+const String addedFav = "City added to favourites.";
+const String removedFav = "City removed from favourites.";
 //Strings that will be passed into the default SnackBar function to display different messages to the user.
 
 var request = http.MultipartRequest('GET', Uri.parse('http://api.airvisual.com/v2/countries?key=' + apiKey));
@@ -68,13 +68,15 @@ class MyApp extends StatelessWidget {
         create: (_) => ThemeModel(),
         child: Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) 
         {
-          return MaterialApp(home: HomePageState(),theme: themeNotifier.isDark ? AppTheme.dark() : AppTheme.light(),);
+          return MaterialApp(home: const HomePageState(),theme: themeNotifier.isDark ? AppTheme.dark() : AppTheme.light(),);
         }));
   }
 }
 
 class HomePageState extends StatefulWidget 
 {
+  const HomePageState({Key? key}) : super(key: key);
+
   @override
   HomePage createState() => HomePage();
 }
@@ -86,7 +88,7 @@ class HomePage extends State {
   void initState() 
   {
     super.initState();
-    this.dbHandler = DatabaseHandler(); //Initialise an instance of the DatabaseHandler so the database can be queried.
+    dbHandler = DatabaseHandler(); //Initialise an instance of the DatabaseHandler so the database can be queried.
   }
 
   @override
@@ -124,7 +126,7 @@ class HomePage extends State {
                       [
                         FutureBuilder(
                           //This future builder creates a card ListView based on the amount of entries getUserCities returns.
-                          future: this.dbHandler.getUserCities(),
+                          future: dbHandler.getUserCities(),
                           builder: (BuildContext context,
                               AsyncSnapshot<List<Entry>> snapshot) {
                             if (snapshot.data?.length != null) //If the data length is not null...
@@ -145,11 +147,11 @@ class HomePage extends State {
                                         key: ValueKey<int>(snapshot.data![index].id!),
                                         onDismissed: (DismissDirection direction) async //If the user dismisses the entry...
                                         {
-                                          await this.dbHandler.deleteUserCity(snapshot.data![index].id!);
+                                          await dbHandler.deleteUserCity(snapshot.data![index].id!);
                                           setState(() 
                                           {
                                             snapshot.data!.remove(snapshot.data![index]);
-                                            ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(CITY_REMOVED));
+                                            ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityRemoved));
                                           });
                                         },
                                         child: GestureDetector(
@@ -169,14 +171,14 @@ class HomePage extends State {
                                               }
                                             } on SocketException catch (_) 
                                             {
-                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(NOT_CONNECTED));
+                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(notConnected));
                                             }
                                           },
                                           onLongPress: () {
                                             if (snapshot.data![index].isFavourite == 0) //If the city that has been long pressed is not favourited...
                                             {
-                                              this.dbHandler.setFavCity(snapshot.data![index],1); //Update the entry's isFavourited column to state that the city is favourited.
-                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(ADDED_FAV));
+                                              dbHandler.setFavCity(snapshot.data![index],1); //Update the entry's isFavourited column to state that the city is favourited.
+                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(addedFav));
                                               //Show a snackbar to the user informing them the city has been added to their favourites.
                                               //Because the FutureBuilder for the favourites list is constantly being executed, this will be shown as soon as
                                               //the user adds a city to their favourites list.
@@ -184,10 +186,10 @@ class HomePage extends State {
                                                   () {}); //Refresh the widgets on screen.
                                             } else //If the city is already favourited...
                                             {
-                                              this.dbHandler.setFavCity(snapshot.data![index], 0); 
+                                              dbHandler.setFavCity(snapshot.data![index], 0); 
                                               //Update the entry's isFavourited column to state that the city
                                               //is no longer favourited.
-                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(REMOVED_FAV));
+                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(removedFav));
                                               //Show a snackbar to the user informing them the city has been removed from their favourites.
                                               setState(
                                                   () {}); //Refresh the widgets on screen.
@@ -195,7 +197,7 @@ class HomePage extends State {
                                           },
                                           child: Card(
                                             child: ListTile(
-                                            contentPadding: EdgeInsets.all(8.0),
+                                            contentPadding: const EdgeInsets.all(8.0),
                                             title: Text(snapshot.data![index].cityName.toString()),
                                             subtitle: Text(snapshot.data![index].stateName.toString() + ", " + snapshot.data![index].countryName.toString()),
                                           )),
@@ -219,7 +221,7 @@ class HomePage extends State {
                     //This future builder creates a card ListView based on the amount of entries getFavUserCities returns.
                     //getFavUserCities returns those entries where isFavourite is 1, indicating the user has favourited those cities.
                     FutureBuilder(
-                      future: this.dbHandler.getFavUserCities(),
+                      future: dbHandler.getFavUserCities(),
                       builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
                         if (snapshot.data?.length != null) 
                         {
@@ -236,8 +238,8 @@ class HomePage extends State {
                                     key: UniqueKey(),
                                     onDismissed:
                                         (DismissDirection direction) async {
-                                      this.dbHandler.setFavCity(snapshot.data![index], 0);
-                                      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(REMOVED_FAV));
+                                      dbHandler.setFavCity(snapshot.data![index], 0);
+                                      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(removedFav));
                                       setState(() {});
                                     },
                                     child: GestureDetector(
@@ -253,17 +255,21 @@ class HomePage extends State {
                                       },
                                       child: Card(
                                           child: ListTile(
-                                        contentPadding: EdgeInsets.all(8.0),
+                                        contentPadding: const EdgeInsets.all(8.0),
                                         title: Text(snapshot.data![index].cityName.toString()),
-                                        subtitle: Text(snapshot.data![index].stateName.toString() +", " +snapshot.data![index].countryName.toString()),
+                                        subtitle: Text(snapshot.data![index].stateName.toString() + ", " +snapshot.data![index].countryName.toString()),
                                       )),
                                     ));
                               },
                             );
-                          } else {
+                          } 
+                          else 
+                          {
                             return noFavCities();
                           }
-                        } else {
+                        } 
+                        else 
+                        {
                           return noFavCities();
                         }
                       },
@@ -271,7 +277,8 @@ class HomePage extends State {
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
-                    onPressed: () async {
+                    onPressed: () async 
+                    {
                       try {
                         //When the button is pressed, try to lookup the address of google.com.
                         //If successful, then get the list of countries via an API call, and navigate to the add city screen.
@@ -296,7 +303,7 @@ class HomePage extends State {
                       } on SocketException catch (_) //If the internet address lookup threw an exception, i.e there is no connection...
                       {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            AppTheme.defaultSnackBar(NOT_CONNECTED));
+                            AppTheme.defaultSnackBar(notConnected));
                         //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
                       }
                     },

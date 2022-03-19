@@ -16,20 +16,23 @@ class WeatherDetailsRoute extends StatelessWidget {
   late Entry userCity;
   late DatabaseHandler dbHandler;
 
-  Future<Map> getWeather() async {
+  Future<Map> getWeather() async 
+  {
     final jsonMap = await fetchWeatherData(userCity.cityName, userCity.stateName, userCity.countryName);
     Map weatherMap = jsonMap['current']['weather'];
     return weatherMap;
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return Scaffold(
         appBar: AppBar(actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-                onTap: () {
+                onTap: () 
+                {
                   if (userCity.isFavourite == 1) 
                   {
                     userCity.isFavourite = 0;
@@ -54,16 +57,13 @@ class WeatherDetailsRoute extends StatelessWidget {
         ]),
         body: FutureBuilder(
           future: getWeather(),
-          builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
-            if (snapshot.hasData) {
+          builder: (BuildContext context, AsyncSnapshot<Map> snapshot) 
+          {
+            if (snapshot.hasData) 
+            {
               var iconPath = iconDir + snapshot.data!['ic'].toString() + ".png";
-              var weatherIcon = Image.asset(
-                iconPath,
-                width: 100,
-                height: 100,
-              );
-              var backgroundPath =
-                  backgroundDir + snapshot.data!['ic'].toString() + ".jpg";
+              var weatherIcon = Image.asset(iconPath,width: 100,height: 100,);
+              var backgroundPath = backgroundDir + snapshot.data!['ic'].toString() + ".jpg";
               var weatherBackground = AssetImage(backgroundPath);
               return Container(
                 alignment: Alignment.topCenter,
@@ -74,10 +74,8 @@ class WeatherDetailsRoute extends StatelessWidget {
                 //If it is cloudy, the background image will be clouds.
                 child: Column(
                   children: <Widget>[
-                    Text(userCity.cityName.toString(),
-                        style: AppTheme.weatherDetailsTextStyle(34)),
-                    Text(userCity.stateName.toString() + ", " + userCity.countryName.toString(),
-                        style: AppTheme.weatherDetailsTextStyle(24)),
+                    Text(userCity.cityName.toString(), style: AppTheme.weatherDetailsTextStyle(34)),
+                    Text(userCity.stateName.toString() + ", " + userCity.countryName.toString(), style: AppTheme.weatherDetailsTextStyle(24)),
                     weatherIcon,
                     RichText(
                         text: TextSpan(
@@ -87,17 +85,15 @@ class WeatherDetailsRoute extends StatelessWidget {
                           WidgetSpan(
                               child: Transform.translate(
                                   offset: const Offset(0.0, -28.0),
-                                  child: Text("o",
-                                      style: AppTheme.weatherDetailsTextStyle(
-                                          24)))),
-                          TextSpan(
-                              text: "C",
-                              style: AppTheme.weatherDetailsTextStyle(48))
+                                  child: Text("o", style: AppTheme.weatherDetailsTextStyle(24)))),
+                          TextSpan(text: "C",style: AppTheme.weatherDetailsTextStyle(48))
                         ]))
                   ],
                 ),
               );
-            } else {
+            } 
+            else 
+            {
               return const Center(child: CircularProgressIndicator());
             }
           },
