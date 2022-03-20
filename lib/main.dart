@@ -63,7 +63,8 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return ChangeNotifierProvider(
         create: (_) => ThemeModel(),
         child: Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) 
@@ -76,12 +77,12 @@ class MyApp extends StatelessWidget {
 class HomePageState extends StatefulWidget 
 {
   const HomePageState({Key? key}) : super(key: key);
-
   @override
   HomePage createState() => HomePage();
 }
 
-class HomePage extends State {
+class HomePage extends State 
+{
   late DatabaseHandler dbHandler;
 
   @override
@@ -92,9 +93,11 @@ class HomePage extends State {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return Consumer<ThemeModel>(
-      builder: (context, ThemeModel themeNotifier, child) {
+      builder: (context, ThemeModel themeNotifier, child) 
+      {
         return DefaultTabController(
             length: 2,
             child: Scaffold(
@@ -127,8 +130,8 @@ class HomePage extends State {
                         FutureBuilder(
                           //This future builder creates a card ListView based on the amount of entries getUserCities returns.
                           future: dbHandler.getUserCities(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<Entry>> snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<List<UserCityDetails>> snapshot) 
+                          {
                             if (snapshot.data?.length != null) //If the data length is not null...
                             {
                               if (snapshot.data?.length != 0) //If the data length is not zero...
@@ -155,23 +158,21 @@ class HomePage extends State {
                                           });
                                         },
                                         child: GestureDetector(
-                                          onTap: () async {
+                                          onTap: () async { 
                                             try 
                                             {
+                                              //When the button is pressed, try to lookup the address of google.com.
+                                              //If successful, then navigate to the weather details screen, passing in the entire array of city details.
                                               final isConnected = await InternetAddress.lookup('google.com');
                                               if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
-                                                {
-                                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute
-                                                  (
-                                                    snapshot.data![index].cityName,
-                                                    snapshot.data![index].stateName,
-                                                    snapshot.data![index].countryName,
-                                                    snapshot.data![index].isFavourite
-                                                  )));
+                                              {
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index])));
                                               }
-                                            } on SocketException catch (_) 
+                                            } 
+                                            on SocketException catch (_)  //If the internet address lookup threw an exception, i.e there is no connection...
                                             {
                                               ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(notConnected));
+                                              //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
                                             }
                                           },
                                           onLongPress: () {
@@ -222,7 +223,7 @@ class HomePage extends State {
                     //getFavUserCities returns those entries where isFavourite is 1, indicating the user has favourited those cities.
                     FutureBuilder(
                       future: dbHandler.getFavUserCities(),
-                      builder: (BuildContext context, AsyncSnapshot<List<Entry>> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<List<UserCityDetails>> snapshot) {
                         if (snapshot.data?.length != null) 
                         {
                           if (snapshot.data?.length != 0) 
@@ -231,33 +232,31 @@ class HomePage extends State {
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemCount: snapshot.data?.length,
-                              itemBuilder: (BuildContext context, int index) {
+                              itemBuilder: (BuildContext context, int index) 
+                              {
                                 return Dismissible(
                                     direction: DismissDirection.endToStart,
                                     background: AppTheme.dismissibleContainer(),
-                                    key: UniqueKey(),
-                                    onDismissed:
-                                        (DismissDirection direction) async {
+                                    key: UniqueKey(), //A unique key is used instead of ValueKey, otherwise when the dismissible is dismissed, the data is not removed.
+                                                      //Because the data does not end up getting removed, it causes an exception.
+                                    onDismissed: (DismissDirection direction) async 
+                                    {
                                       dbHandler.setFavCity(snapshot.data![index], 0);
                                       ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(removedFav));
                                       setState(() {});
                                     },
                                     child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    WeatherDetailsRoute(
-                                                        snapshot.data![index].cityName,
-                                                        snapshot.data![index].stateName,
-                                                        snapshot.data![index].countryName,
-                                                        snapshot.data![index].isFavourite)));
+                                      onTap: () 
+                                      {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index])));
+                                        //If the user taps on the dismissible, go to the weather details screen, passing in the entire array of city details.
                                       },
                                       child: Card(
-                                          child: ListTile(
-                                        contentPadding: const EdgeInsets.all(8.0),
-                                        title: Text(snapshot.data![index].cityName.toString()),
-                                        subtitle: Text(snapshot.data![index].stateName.toString() + ", " +snapshot.data![index].countryName.toString()),
+                                        child: ListTile(
+                                          contentPadding: const EdgeInsets.all(8.0),
+                                          title: Text(snapshot.data![index].cityName.toString()),
+                                          subtitle: Text(snapshot.data![index].stateName.toString() + ", " +snapshot.data![index].countryName.toString()),
+                                          //In the listview body, create a list tile with the name of the city, as well as the state and country of the city.
                                       )),
                                     ));
                               },
@@ -266,11 +265,13 @@ class HomePage extends State {
                           else 
                           {
                             return noFavCities();
+                            //If the snapshot data length was zero, display on screen that there are no favourite cities.
                           }
                         } 
                         else 
                         {
                           return noFavCities();
+                          //If the snapshot data length was null, display on screen that there are no favourite cities.
                         }
                       },
                     )
@@ -279,12 +280,14 @@ class HomePage extends State {
                 floatingActionButton: FloatingActionButton(
                     onPressed: () async 
                     {
-                      try {
+                      try 
+                      {
                         //When the button is pressed, try to lookup the address of google.com.
                         //If successful, then get the list of countries via an API call, and navigate to the add city screen.
                         final isConnected =
                             await InternetAddress.lookup('google.com');
-                        if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) {
+                        if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
+                        {
                           Map resp = await fetchCountryData();
                           resp.forEach((status, cityData) {tempCountryMap = cityData;});
                           for (int i = 0; i < 100; i++) //For the 100 countries that are in the list...
@@ -300,7 +303,8 @@ class HomePage extends State {
                             (context as Element).reassemble(); //Refresh the screen.
                           });
                         }
-                      } on SocketException catch (_) //If the internet address lookup threw an exception, i.e there is no connection...
+                      } 
+                      on SocketException catch (_) //If the internet address lookup threw an exception, i.e there is no connection...
                       {
                         ScaffoldMessenger.of(context).showSnackBar(
                             AppTheme.defaultSnackBar(notConnected));
