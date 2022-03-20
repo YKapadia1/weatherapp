@@ -15,7 +15,7 @@ class DatabaseHandler {
     );
   }
 
-  Future<int> insertUserCity(List<Entry> userCitySelection) async {
+  Future<int> insertUserCity(List<UserCityDetails> userCitySelection) async {
     int result = 0;
     final Database db = await initializeDB();
     for (var cityName in userCitySelection) 
@@ -25,7 +25,7 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<int> setFavCity(Entry userCitySelection, int newFavValue) async {
+  Future<int> setFavCity(UserCityDetails userCitySelection, int newFavValue) async {
     int result = 0;
     userCitySelection.isFavourite = newFavValue;
     final Database db = await initializeDB();
@@ -33,16 +33,16 @@ class DatabaseHandler {
     return result;
   }
 
-  Future<List<Entry>> getUserCities() async {
+  Future<List<UserCityDetails>> getUserCities() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities');
-    return queryResult.map((e) => Entry.fromMap(e)).toList();
+    return queryResult.map((e) => UserCityDetails.fromMap(e)).toList();
   }
 
-  Future<List<Entry>> getFavUserCities() async {
+  Future<List<UserCityDetails>> getFavUserCities() async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
-    return queryResult.map((e) => Entry.fromMap(e)).toList();
+    return queryResult.map((e) => UserCityDetails.fromMap(e)).toList();
   }
 
   Future<void> deleteUserCity(int id) async {

@@ -1,11 +1,12 @@
-class Entry {
+class UserCityDetails 
+{
   final int? id;
   final String? cityName;
   final String? stateName;
   final String? countryName;
   late int isFavourite;
 
-  Entry({
+  UserCityDetails({
     this.id,
     required this.cityName,
     required this.stateName,
@@ -14,7 +15,7 @@ class Entry {
   });
 
   // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-  Entry.fromMap(Map<String, dynamic> res)
+  UserCityDetails.fromMap(Map<String, dynamic> res)
       : id = res['id'],
         cityName = res['cityName'],
         stateName = res['stateName'],
