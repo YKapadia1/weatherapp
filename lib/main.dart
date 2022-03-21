@@ -158,7 +158,8 @@ class HomePage extends State
                                           });
                                         },
                                         child: GestureDetector(
-                                          onTap: () async { 
+                                          onTap: () async 
+                                          { 
                                             try 
                                             {
                                               //When the button is pressed, try to lookup the address of google.com.
@@ -249,12 +250,26 @@ class HomePage extends State
                                       setState(() {});
                                     },
                                     child: GestureDetector(
-                                      onTap: () 
+                                      onTap: () async
                                       {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
-                                          {
-                                            setState(() {});
-                                          });
+                                        try 
+                                            {
+                                              //When the button is pressed, try to lookup the address of google.com.
+                                              //If successful, then navigate to the weather details screen, passing in the entire array of city details.
+                                              final isConnected = await InternetAddress.lookup('google.com');
+                                              if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
+                                              {
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
+                                                {
+                                                  setState(() {});
+                                                });
+                                              }
+                                            } 
+                                            on SocketException catch (_)  //If the internet address lookup threw an exception, i.e there is no connection...
+                                            {
+                                              ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(notConnected));
+                                              //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
+                                            }
                                         //If the user taps on the dismissible, go to the weather details screen, passing in the entire array of city details.
                                         //Once the user has exited the screen, refresh the main screen.
                                       },
