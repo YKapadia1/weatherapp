@@ -37,13 +37,10 @@ class AppTheme {
         wordSpacing: 0),
   );
 
-  static ThemeData light() {
+  static ThemeData light() 
+  {
     return ThemeData(
       brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: Colors.white,
         backgroundColor: Colors.blue,
@@ -55,13 +52,10 @@ class AppTheme {
     );
   }
 
-  static ThemeData dark() {
+  static ThemeData dark() 
+  {
     return ThemeData(
       brightness: Brightness.dark,
-      appBarTheme: const AppBarTheme(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: Colors.white,
         backgroundColor: Colors.blue,
