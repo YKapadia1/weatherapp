@@ -8,9 +8,9 @@ late SharedPreferences prefs;
 class Settings extends StatefulWidget {
   final ThemeModel themeNotifier;
 
-  Settings(this.themeNotifier);
+  const Settings(this.themeNotifier);
 
-  bool get isDarkEnabled => this.themeNotifier.isDark;
+  bool get isDarkEnabled => themeNotifier.isDark;
 
   @override
   SettingsWidgets createState() => SettingsWidgets();
@@ -20,7 +20,7 @@ class SettingsWidgets extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(padding: EdgeInsets.all(8.0),
+      body: Container(padding: const EdgeInsets.all(8.0),
         child: Row(
         mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

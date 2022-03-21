@@ -16,6 +16,6 @@ class AddCityRoute extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Add a city...'),
         ),
-        body: Center(child: DropDown()));
+        body: const Center(child: DropDown()));
   }
 }

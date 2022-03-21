@@ -13,6 +13,8 @@ const String cityAdded = "City successfully added!";
 
 class DropDown extends StatefulWidget 
 {
+  const DropDown({Key? key}) : super(key: key);
+
   @override
   DropDownWidgets createState() => DropDownWidgets();
 }
@@ -28,8 +30,8 @@ class DropDownWidgets extends State {
   void initState() 
   {
     super.initState();
-    this.handler = DatabaseHandler();
-    this.handler.initializeDB();
+    handler = DatabaseHandler();
+    handler.initializeDB();
     (context as Element).reassemble();
   }
 
@@ -41,7 +43,7 @@ class DropDownWidgets extends State {
         countryName: userCountry,
         isFavourite: 0);
     List<UserCityDetails> entryToAdd = [cityToAdd];
-    return await this.handler.insertUserCity(entryToAdd);
+    return await handler.insertUserCity(entryToAdd);
   }
 
   Future getStates() async {
@@ -79,12 +81,12 @@ class DropDownWidgets extends State {
     return Scaffold(
         body: Center(
             child: Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
                     DropdownButtonFormField<String>(
                         value: selectedCountry,
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(Icons.arrow_drop_down),
                         iconSize: 24,
                         elevation: 16,
                         onChanged: (String? data) 
@@ -118,16 +120,16 @@ class DropDownWidgets extends State {
                         {
                           return DropdownMenuItem<String>(value: value,child: Text(value));
                         }).toList(),
-                        decoration: InputDecoration(labelText: "Select a country...")),
+                        decoration: const InputDecoration(labelText: "Select a country...")),
                     if (stateList[0] == 'null') ... //If the first element in stateList says 'null'...
                     [
-                      DropdownButtonFormField(items: [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
+                      DropdownButtonFormField(items: const [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
                     ] 
                     else ...
                     [
                       DropdownButtonFormField<String>(
                           value: selectedState,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 24,
                           elevation: 16,
                           onChanged: (String? data) {
@@ -157,14 +159,14 @@ class DropDownWidgets extends State {
                               child: Text(value),
                             );
                           }).toList(),
-                          decoration: InputDecoration(labelText: "Select a state...")),
+                          decoration: const InputDecoration(labelText: "Select a state...")),
                       if (cityList[0] == 'null') ... //If the first element in cityList is 'null'...
                       [
-                        DropdownButtonFormField(items: [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
+                        DropdownButtonFormField(items: const [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
                       ] else ...[
                         DropdownButtonFormField<String>(
                             value: selectedCity,
-                            icon: Icon(Icons.arrow_drop_down),
+                            icon: const Icon(Icons.arrow_drop_down),
                             iconSize: 24,
                             elevation: 16,
                             onChanged: (String? data) //When the user has selected an item...
@@ -178,7 +180,7 @@ class DropDownWidgets extends State {
                             { 
                               return DropdownMenuItem<String>(value: value, child: Text(value),);
                             }).toList(),
-                            decoration: InputDecoration(labelText: "Select a city...")),
+                            decoration: const InputDecoration(labelText: "Select a city...")),
                             //The hint text on the drop down will inform the user that they need to select a city.
                         if (selectedCity != null) ... //Only if the user has selected a city...
                         [
