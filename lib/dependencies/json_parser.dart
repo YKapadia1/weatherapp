@@ -1,4 +1,4 @@
-class States 
+class States //The data model used to temporarily store the list of states returned by the weather API.
 {
   String? state;
 
@@ -8,16 +8,10 @@ class States
   {
     state = json['state'];
   }
-
-  Map<String, dynamic> toJson() 
-  {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['state'] = state;
-    return data;
-  }
 }
 
-class Cities {
+class Cities //The data model used to temporarily store the list of cities returned by the weather API.
+{
   String? city;
 
   Cities({this.city});
@@ -25,12 +19,5 @@ class Cities {
   Cities.fromJson(Map<String, dynamic> json) 
   {
     city = json['city'];
-  }
-
-  Map<String, dynamic> toJson() 
-  {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['city'] = city;
-    return data;
   }
 }
