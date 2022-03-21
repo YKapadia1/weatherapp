@@ -1,10 +1,11 @@
-class JSONLayout {
+class Countries 
+{
   String? status;
   List<States>? data;
 
-  JSONLayout({this.status, this.data});
+  Countries({this.status, this.data});
 
-  JSONLayout.fromJson(Map<String, dynamic> json) 
+  Countries.fromJson(Map<String, dynamic> json) 
   {
     status = json['status'];
     if (json['data'] != null) 
@@ -17,6 +18,7 @@ class JSONLayout {
     }
   }
 
+  
   Map<String, dynamic> toJson() 
   {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -29,7 +31,8 @@ class JSONLayout {
   }
 }
 
-class States {
+class States 
+{
   String? state;
 
   States({this.state});
