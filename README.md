@@ -21,9 +21,9 @@ If building the app for the first time, run the following batch files in this or
 
 It is also possible to do the same thing in Visual Studio Code, provided you have the project folder open in a workspace and Dart/Flutter is integrated into the IDE:
 
-In the terminal, type the command "flutter clean" without quotes to completely clean the project.
-Next, type the command "flutter pub get" also without quotes to acquire the necessary packages.
-Finally, type the command "flutter build apk" also without quotes to build the project.
+- In the terminal, type the command "flutter clean" without quotes to completely clean the project.
+- Next, type the command "flutter pub get" also without quotes to acquire the necessary packages.
+- Finally, type the command "flutter build apk" also without quotes to build the project.
 
 The assembled APK can be found in "\build\app\outputs\flutter-apk", and will be called "app-release.apk".
 
