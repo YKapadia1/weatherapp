@@ -6,15 +6,15 @@ import 'package:weatherapp/user_city_table_model.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
-const iconDir = "image_assets/";
-const backgroundDir = "image_assets/background_";
+const iconDir = "image_assets/"; //The directory of the weather icons.
+const backgroundDir = "image_assets/background_"; //The directory of the background images.
 
 class WeatherDetailsRoute extends StatelessWidget 
 {
   WeatherDetailsRoute(this.userCity, {Key? key}) : super(key: key);
   //The weather details constructor takes a variable with the data type of Entry. Entry is the data model I am using to store the user's cities.
 
-  late UserCityDetails userCity;
+  final UserCityDetails userCity;
   final DatabaseHandler dbHandler = DatabaseHandler();
   //Declare these variables as late, as they will be initialised later on.
 

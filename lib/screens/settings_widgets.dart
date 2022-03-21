@@ -24,13 +24,15 @@ class SettingsWidgets extends State<Settings>
       body: Container(padding: const EdgeInsets.all(8.0),
         child: Row(
         mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //Create a container with a Row child as the widgets.
         children: <Widget>[
-        const Text("Dark Mode", style: TextStyle(fontSize: 24),),
-        Switch.adaptive(
+        const Text("Dark Mode", style: TextStyle(fontSize: 24),), //Inside the Row child, have a text label, as well as a switch.
+        Switch.adaptive( //The switch controls the theme preference. If its set to off, then the app theme will be light mode.
+        //If set to on, then the app theme will be dark mode.
             value: widget.isDarkEnabled,
-            activeColor: Colors.blue,
-            dragStartBehavior: DragStartBehavior.start,
-            onChanged: (newValue) 
+            activeColor: Colors.blue, //The color of the switch when it is active.
+            dragStartBehavior: DragStartBehavior.start, //How to animate the switch.
+            onChanged: (newValue) //If the switch is pressed on...
             {
               setState(() 
               {

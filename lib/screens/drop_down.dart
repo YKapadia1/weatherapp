@@ -10,6 +10,7 @@ import 'package:weatherapp/dependencies/db_handler.dart';
 const String cityDataErr = "An error occured while fetching cities.";
 const String dataErrNotConnected = "Cannot fetch data: You are not connected to the Internet.";
 const String cityAdded = "City successfully added!";
+//Snackbar messages to display to the user depending on the action.
 
 class DropDown extends StatefulWidget 
 {
@@ -20,11 +21,13 @@ class DropDown extends StatefulWidget
 }
 
 
-class DropDownWidgets extends State {
+class DropDownWidgets extends State 
+{
   String? selectedCountry = countryList[0];
   String? selectedState;
   String? selectedCity;
   late DatabaseHandler handler;
+  //Initialise the needed variables for the screen to function.
 
   @override
   void initState() 
@@ -33,6 +36,7 @@ class DropDownWidgets extends State {
     handler = DatabaseHandler();
     handler.initializeDB();
     (context as Element).reassemble();
+    //Initialise the state by initialising the database handler and the city database, then refresh the screen.
   }
 
   Future<int> addUserCity(String? userCity, String? userState, String? userCountry) async 
@@ -45,12 +49,13 @@ class DropDownWidgets extends State {
         isFavourite: 0);
     List<UserCityDetails> entryToAdd = [cityToAdd];
     return await handler.insertUserCity(entryToAdd);
+    //Add the user's selection to the database.
   }
 
   Future getStates() async 
   //The function that gets and parses a country's state list from the API into a drop down list.
   {
-    final jsonMap = await fetchStateData(selectedCountry);
+    final jsonMap = await fetchStateData(selectedCountry); //Call the API to fetch the state list.
     List<States> temp = (jsonMap['data'] as List).map((state) => States.fromJson(state)).toList();
     for (int i = 0; i < temp.length; i++) {
       if (i == 0) 
@@ -58,6 +63,7 @@ class DropDownWidgets extends State {
         stateList.clear();
       }
       stateList.add(temp[i].state.toString());
+      //Put the state data into a list of states so it is easier to use as the drop down items.
     }
     (context as Element).reassemble();
   }
@@ -69,6 +75,7 @@ class DropDownWidgets extends State {
     if (jsonMap.containsValue('fail')) //If the return code was not success...
     {
       ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
+      //This is needed as the API can return a status code of no supported cities found.
     } 
     else 
     {
