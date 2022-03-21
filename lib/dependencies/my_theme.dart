@@ -60,12 +60,13 @@ class AppTheme {
   }
 
   static TextStyle lightText() //The text style to be used when in light mode.
+  //This is used when some widgets do not follow the TextTheme defined.
   {
     return const TextStyle(color: Colors.black,);
   }
 
   static TextStyle darkText() //The text style to be used when in dark mode.
-  {
+  { //This is used when some widgets do not follow the TextTheme defined.
     return const TextStyle(color: Colors.white,);
   }
 
@@ -90,7 +91,9 @@ class AppTheme {
     );
   }
 
-  static TextStyle weatherDetailsTextStyle(double textSize) {
+  static TextStyle weatherDetailsTextStyle(double textSize) 
+  {
     return TextStyle(color: Colors.white, fontSize: textSize);
+    //The text style used only on the weather details screen.
   }
 }
