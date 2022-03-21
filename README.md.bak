@@ -10,8 +10,6 @@ Due to API limitations, only the current weather of a given city can be displaye
 
 ## Getting Started
 
-**IMPORTANT: Before building, ensure you have Flutter version 2.10.3 installed. Older versions may not work.**
-
 If building the app for the first time, run the following batch files in this order:
 
 - cleanproj.bat
@@ -19,6 +17,3 @@ If building the app for the first time, run the following batch files in this or
 - buildapp.bat
 
 The assembled APK can be found in "\build\app\outputs\flutter-apk", and will be called "app-release.apk".
-
-When downloading the ZIP, the project should have already had cleanproj.bat run already, so all you need to do is download the necessary
-packages, and build the project.
