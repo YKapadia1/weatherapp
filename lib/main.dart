@@ -262,6 +262,7 @@ class HomePage extends State
                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
                                                 {
                                                   setState(() {});
+                                                   //Once the user has exited the screen, refresh the main screen.
                                                 });
                                               }
                                             } 
@@ -270,8 +271,7 @@ class HomePage extends State
                                               ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(notConnected));
                                               //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
                                             }
-                                        //If the user taps on the dismissible, go to the weather details screen, passing in the entire array of city details.
-                                        //Once the user has exited the screen, refresh the main screen.
+                                       
                                       },
                                       child: Card(
                                         child: ListTile(
