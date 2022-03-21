@@ -284,8 +284,7 @@ class HomePage extends State
                       {
                         //When the button is pressed, try to lookup the address of google.com.
                         //If successful, then get the list of countries via an API call, and navigate to the add city screen.
-                        final isConnected =
-                            await InternetAddress.lookup('google.com');
+                        final isConnected = await InternetAddress.lookup('google.com');
                         if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                         {
                           Map resp = await fetchCountryData();
@@ -306,8 +305,7 @@ class HomePage extends State
                       } 
                       on SocketException catch (_) //If the internet address lookup threw an exception, i.e there is no connection...
                       {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            AppTheme.defaultSnackBar(notConnected));
+                        ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(notConnected));
                         //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
                       }
                     },
