@@ -41,6 +41,14 @@ class AppTheme {
   {
     return ThemeData(
       brightness: Brightness.light,
+      appBarTheme: const AppBarTheme(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
       ),
@@ -52,6 +60,14 @@ class AppTheme {
   {
     return ThemeData(
       brightness: Brightness.dark,
+      appBarTheme: const AppBarTheme(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
       ),
@@ -61,14 +77,11 @@ class AppTheme {
 
   static TextStyle lightText() //The text style to be used when in light mode.
   //This is used when some widgets do not follow the TextTheme defined.
-  {
-    return const TextStyle(color: Colors.black,);
-  }
+  {return const TextStyle(color: Colors.black,);}
 
   static TextStyle darkText() //The text style to be used when in dark mode.
-  { //This is used when some widgets do not follow the TextTheme defined.
-    return const TextStyle(color: Colors.white,);
-  }
+  //This is used when some widgets do not follow the TextTheme defined.
+  {return const TextStyle(color: Colors.white,);}
 
   static SnackBar defaultSnackBar(String snackBarText) //A snackbar that takes a string parameter that displays a message to the user at the bottom of the screen.
   //This was done to avoid repeating code.
@@ -92,8 +105,6 @@ class AppTheme {
   }
 
   static TextStyle weatherDetailsTextStyle(double textSize) 
-  {
-    return TextStyle(color: Colors.white, fontSize: textSize);
-    //The text style used only on the weather details screen.
-  }
+  {return TextStyle(color: Colors.white, fontSize: textSize);}
+  //The text style used only on the weather details screen.
 }
