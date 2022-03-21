@@ -41,10 +41,6 @@ class AppTheme {
   {
     return ThemeData(
       brightness: Brightness.light,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
       ),
@@ -56,10 +52,6 @@ class AppTheme {
   {
     return ThemeData(
       brightness: Brightness.dark,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
       ),
