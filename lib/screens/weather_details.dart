@@ -14,7 +14,7 @@ class WeatherDetailsRoute extends StatelessWidget
   WeatherDetailsRoute(this.userCity, {Key? key}) : super(key: key);
   //The weather details constructor takes a variable with the data type of Entry. Entry is the data model I am using to store the user's cities.
 
-  late Entry userCity;
+  late UserCityDetails userCity;
   late DatabaseHandler dbHandler;
   //Declare these variables as late, as they will be initialised later on.
 

@@ -35,12 +35,12 @@ class DropDownWidgets extends State {
 
   Future<int> addUserCity(
       String? userCity, String? userState, String? userCountry) async {
-    Entry cityToAdd = Entry(
+    UserCityDetails cityToAdd = UserCityDetails(
         cityName: userCity,
         stateName: userState,
         countryName: userCountry,
         isFavourite: 0);
-    List<Entry> entryToAdd = [cityToAdd];
+    List<UserCityDetails> entryToAdd = [cityToAdd];
     return await this.handler.insertUserCity(entryToAdd);
   }
 
