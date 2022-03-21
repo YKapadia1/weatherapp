@@ -5,20 +5,21 @@ import 'package:weatherapp/dependencies/theme_model.dart';
 
 late SharedPreferences prefs;
 
-class Settings extends StatefulWidget {
+class Settings extends StatefulWidget 
+{
   final ThemeModel themeNotifier;
-
   const Settings(this.themeNotifier);
-
   bool get isDarkEnabled => themeNotifier.isDark;
 
   @override
   SettingsWidgets createState() => SettingsWidgets();
 }
 
-class SettingsWidgets extends State<Settings> {
+class SettingsWidgets extends State<Settings> 
+{
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return Scaffold(
       body: Container(padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -29,11 +30,12 @@ class SettingsWidgets extends State<Settings> {
             value: widget.isDarkEnabled,
             activeColor: Colors.blue,
             dragStartBehavior: DragStartBehavior.start,
-            onChanged: (newValue) {
-              setState(() {
-                widget.themeNotifier.isDark
-                    ? widget.themeNotifier.isDark = false
-                    : widget.themeNotifier.isDark = true;
+            onChanged: (newValue) 
+            {
+              setState(() 
+              {
+                //Get the value of the isDark bool. If its true, set to false. If not, set to true.
+                widget.themeNotifier.isDark ? widget.themeNotifier.isDark = false : widget.themeNotifier.isDark = true;
               });
             })
       ]),)
