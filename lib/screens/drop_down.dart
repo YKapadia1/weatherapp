@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/dependencies/my_theme.dart';
-import '../entry_table_model.dart';
+import '../user_city_table_model.dart';
 import 'add_city.dart';
 import 'package:weatherapp/dependencies/send_request.dart';
 import 'package:weatherapp/dependencies/json_parser.dart';

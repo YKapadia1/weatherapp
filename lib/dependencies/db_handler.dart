@@ -1,13 +1,16 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:weatherapp/entry_table_model.dart';
+import 'package:weatherapp/user_city_table_model.dart';
 
-class DatabaseHandler {
-  Future<Database> initializeDB() async {
+class DatabaseHandler 
+{
+  Future<Database> initializeDB() async //This opens the database so information inside can be queried and displayed in the app.
+  //The database is created automatically if it does not exist.
+  {
     String path = await getDatabasesPath();
-    return openDatabase(
-      join(path, 'userCities.db'),
-      onCreate: (database, version) async 
+    return openDatabase(join(path, 'userCities.db'),
+      onCreate: (database, version) async
+      //Create a database called userCities with the columns specified.
       {
         await database.execute("CREATE TABLE userCities(id INTEGER PRIMARY KEY AUTOINCREMENT, cityName TEXT NOT NULL,stateName TEXT NOT NULL, countryName TEXT NOT NULL, isFavourite INTEGER NOT NULL)",);
       },

@@ -9,7 +9,7 @@ import 'package:weatherapp/dependencies/theme_model.dart';
 import 'package:weatherapp/screens/add_city.dart';
 import 'package:weatherapp/screens/settings.dart';
 import 'package:weatherapp/screens/weather_details.dart';
-import 'entry_table_model.dart';
+import 'user_city_table_model.dart';
 //Import all packages/dependencies needed.
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';

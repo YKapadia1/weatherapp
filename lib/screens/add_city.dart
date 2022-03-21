@@ -7,7 +7,8 @@ List<String> cityList = ['null'];
 
 
 
-class AddCityRoute extends StatelessWidget {
+class AddCityRoute extends StatelessWidget 
+{
   const AddCityRoute({Key? key}) : super(key: key);
 
   @override
