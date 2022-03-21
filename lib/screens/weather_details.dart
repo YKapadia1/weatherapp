@@ -15,7 +15,7 @@ class WeatherDetailsRoute extends StatelessWidget
   //The weather details constructor takes a variable with the data type of Entry. Entry is the data model I am using to store the user's cities.
 
   late UserCityDetails userCity;
-  late DatabaseHandler dbHandler;
+  final DatabaseHandler dbHandler = DatabaseHandler();
   //Declare these variables as late, as they will be initialised later on.
 
   Future<Map> getWeather() async //Gets the weather data using the Entry variable supplied to WeatherDetailsRoute.

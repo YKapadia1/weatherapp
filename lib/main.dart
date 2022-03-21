@@ -166,7 +166,10 @@ class HomePage extends State
                                               final isConnected = await InternetAddress.lookup('google.com');
                                               if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                                               {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index])));
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
+                                                {
+                                                  setState(() {});
+                                                });
                                               }
                                             } 
                                             on SocketException catch (_)  //If the internet address lookup threw an exception, i.e there is no connection...
@@ -248,8 +251,12 @@ class HomePage extends State
                                     child: GestureDetector(
                                       onTap: () 
                                       {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index])));
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
+                                          {
+                                            setState(() {});
+                                          });
                                         //If the user taps on the dismissible, go to the weather details screen, passing in the entire array of city details.
+                                        //Once the user has exited the screen, refresh the main screen.
                                       },
                                       child: Card(
                                         child: ListTile(
