@@ -35,8 +35,9 @@ class DropDownWidgets extends State {
     (context as Element).reassemble();
   }
 
-  Future<int> addUserCity(
-      String? userCity, String? userState, String? userCountry) async {
+  Future<int> addUserCity(String? userCity, String? userState, String? userCountry) async 
+  //The functions that adds the user's city selection to the database.
+  {
     UserCityDetails cityToAdd = UserCityDetails(
         cityName: userCity,
         stateName: userState,
@@ -46,7 +47,9 @@ class DropDownWidgets extends State {
     return await handler.insertUserCity(entryToAdd);
   }
 
-  Future getStates() async {
+  Future getStates() async 
+  //The function that gets and parses a country's state list from the API into a drop down list.
+  {
     final jsonMap = await fetchStateData(selectedCountry);
     List<States> temp = (jsonMap['data'] as List).map((state) => States.fromJson(state)).toList();
     for (int i = 0; i < temp.length; i++) {
@@ -59,25 +62,33 @@ class DropDownWidgets extends State {
     (context as Element).reassemble();
   }
 
-  Future getCities() async {
-    final jsonMap = await fetchCityData(selectedState, selectedCountry);
-    if (jsonMap.containsValue('fail')) {
-      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr));
-    } else {
+  Future getCities() async 
+  //The function that gets and parses a state's city list from the API into a drop down list.
+  {
+    final jsonMap = await fetchCityData(selectedState, selectedCountry); //Get the city list from the API.
+    if (jsonMap.containsValue('fail')) //If the return code was not success...
+    {
+      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
+    } 
+    else 
+    {
       List<Cities> temp = (jsonMap['data'] as List).map((city) => Cities.fromJson(city)).toList();
-      for (int i = 0; i < temp.length; i++) {
+      for (int i = 0; i < temp.length; i++) 
+      {
         if (i == 0) 
         {
           cityList.clear();
         }
         cityList.add(temp[i].city.toString());
+        //One by one, add the cities that are returned into a list.
       }
-      (context as Element).reassemble();
+      (context as Element).reassemble(); //Refresh the screen.
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return Scaffold(
         body: Center(
             child: Container(
@@ -89,37 +100,36 @@ class DropDownWidgets extends State {
                         icon: const Icon(Icons.arrow_drop_down),
                         iconSize: 24,
                         elevation: 16,
-                        onChanged: (String? data) 
+                        onChanged: (String? data) //When the user has selected a country...
                         {
                           setState(() async 
                           {
-                            stateList[0] = 'null';
-                            (context as Element).reassemble();
-                            selectedCountry = data;
-                            try 
+                            stateList[0] = 'null'; //Set the first element of stateList to 'null'. 
+                            //This is to prevent the user from selecting a non existent element in the state drop down list and causing an error.
+                            (context as Element).reassemble(); //Refresh the screen to ensure the state drop down list remains disabled.
+                            selectedCountry = data; //Update the selected value.
+                            try //Try to...
                             {
-                              final isConnected =
-                                  await InternetAddress.lookup('google.com');
-                              if (isConnected.isNotEmpty &&
-                                  isConnected[0].rawAddress.isNotEmpty) {
-                                getStates();
-                                selectedState = null;
-                                selectedCity = null;
-                                cityList[0] = 'null';
+                              final isConnected = await InternetAddress.lookup('google.com'); //Lookup the address of google.com.
+                              //This is to ensure the user still has an internet connection.
+                              if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) //If there is an internet connection...
+                              {
+                                getStates(); //Call on the API to get the states.
+                                selectedState = null; //Set the value of the selected state to null.
+                                selectedCity = null; //Set the value of the selected city to null.
+                                cityList[0] = 'null';//Set the first element of cityList to 'null'. 
+                            //This is to prevent the user from selecting a non existent element in the city drop down list and causing an error.
                               }
                             } 
-                            on SocketException catch (_) 
+                            on SocketException catch (_) //If a SocketException was thrown, indicating the user has no internet connection...
                             {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  AppTheme.defaultSnackBar(
-                                      dataErrNotConnected));
+                              ScaffoldMessenger.of(context).showSnackBar( AppTheme.defaultSnackBar(dataErrNotConnected));
+                              //Display a snackbar to the user telling them they are not connected to the internet.
                             }
                           });
                         },
                         items: countryList.map<DropdownMenuItem<String>>((String value) 
-                        {
-                          return DropdownMenuItem<String>(value: value,child: Text(value));
-                        }).toList(),
+                        {return DropdownMenuItem<String>(value: value,child: Text(value));}).toList(),
                         decoration: const InputDecoration(labelText: "Select a country...")),
                     if (stateList[0] == 'null') ... //If the first element in stateList says 'null'...
                     [
@@ -132,22 +142,24 @@ class DropDownWidgets extends State {
                           icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 24,
                           elevation: 16,
-                          onChanged: (String? data) {
-                            setState(() async {
+                          onChanged: (String? data) 
+                          {
+                            setState(() async 
+                            {
                               cityList[0] = 'null';
                               (context as Element).reassemble();
                               selectedState = data;
                               try 
                               {
-                                final isConnected =
-                                    await InternetAddress.lookup('google.com');
+                                final isConnected = await InternetAddress.lookup('google.com');
                                 if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                                 {
                                   getCities();
                                   selectedCity = null;
                                 }
                               } 
-                              on SocketException catch (_) {
+                              on SocketException catch (_) 
+                              {
                                 ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(dataErrNotConnected));
                               }
                             });
@@ -171,8 +183,8 @@ class DropDownWidgets extends State {
                             elevation: 16,
                             onChanged: (String? data) //When the user has selected an item...
                             {
-                              setState(() {
-
+                              setState(() 
+                              {
                                 selectedCity = data;
                               });
                             },

@@ -28,8 +28,7 @@ var request = http.MultipartRequest('GET', Uri.parse('http://api.airvisual.com/v
 
 void main() {runApp(const MyApp());}
 
-Center
-    noCities() //This function will be called if the user does not have any cities added.
+Center noCities() //This function will be called if the user does not have any cities added.
 {
   return Center(
     child: Column(
@@ -38,13 +37,13 @@ Center
       [
         Text('No cities added', style: TextStyle(fontSize: 34, color: Colors.grey),),
         Text('Tap the button in the bottom right to add a city and get started.',style: TextStyle(fontSize: 24,)),
+        //The text to display when the user has no cities added.
       ],
     ),
   );
 }
 
-Center
-    noFavCities() //This function will be called if the user does not have any favourite cities.
+Center noFavCities() //This function will be called if the user does not have any favourite cities.
 {
   return Center(
     child: Column(
@@ -53,6 +52,7 @@ Center
       [
         Text('No favourite cities',style: TextStyle(fontSize: 34, color: Colors.grey)),
         Text('Long press on a city to add it to your favourites.', style: TextStyle(fontSize: 24,)),
+        //The text displayed when the user has no favourite cities.
       ],
     ),
   );
@@ -65,6 +65,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) 
   {
+    //The ChangeNotifierProvider is needed to tell the app when the theme has changed, and to change it accordingly.
+    //This happens across the entire app.
     return ChangeNotifierProvider(
         create: (_) => ThemeModel(),
         child: Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) 
