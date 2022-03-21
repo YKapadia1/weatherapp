@@ -18,42 +18,55 @@ class DatabaseHandler
     );
   }
 
-  Future<int> insertUserCity(List<UserCityDetails> userCitySelection) async {
+  //This function is called whenever the user adds a new city to their list. It inserts the list into the database as a new column.
+  Future<int> insertUserCity(List<UserCityDetails> userCitySelection) async 
+  {
     int result = 0;
-    final Database db = await initializeDB();
-    for (var cityName in userCitySelection) 
+    final Database db = await initializeDB(); //Initialise and open the database.
+    for (var cityName in userCitySelection) //For each city the user wants adding... (always 1)
     {
-      result = await db.insert('userCities', cityName.toMap());
+      result = await db.insert('userCities', cityName.toMap()); //Insert the data as a new row into the database.
     }
     return result;
   }
 
-  Future<int> setFavCity(UserCityDetails userCitySelection, int newFavValue) async {
+  //This function is called whenever the user sets or unsets a city as their favourite.
+  Future<int> setFavCity(UserCityDetails userCitySelection, int newFavValue) async 
+  {
     int result = 0;
-    userCitySelection.isFavourite = newFavValue;
+    userCitySelection.isFavourite = newFavValue; //Update the data entry to be the new value the user wants.
     final Database db = await initializeDB();
     result = await db.update('userCities', userCitySelection.toMap(), where: 'id = ?', whereArgs: [userCitySelection.id]);
+    //This updates the entry row of the city the user wants (un)favouriting only.
+    //It's easier to update the entire row even though one value changes.
     return result;
   }
 
-  Future<List<UserCityDetails>> getUserCities() async {
+  Future<List<UserCityDetails>> getUserCities() async 
+  //This function is called to get the list of cities a user may already have added.
+  //This function can also return nothing, in which case a message will display on screen telling the user what to do.
+  {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities');
+    //Get the list of any rows in the database, and store it in a list of maps to return to the function caller.
     return queryResult.map((e) => UserCityDetails.fromMap(e)).toList();
   }
 
-  Future<List<UserCityDetails>> getFavUserCities() async {
+  //This function is called to get the list of cities a user has favourited.
+  //This function can also return nothing, in which case a message will display on screen telling the user what to do.
+  Future<List<UserCityDetails>> getFavUserCities() async 
+  {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('userCities', where: "isFavourite = ?", whereArgs: [1]);
     return queryResult.map((e) => UserCityDetails.fromMap(e)).toList();
   }
 
-  Future<void> deleteUserCity(int id) async {
+  //This function is called whenever a user wants to delete a city from the database. 
+  //Note that this does not prevent the user from adding that same city in the future.
+  Future<void> deleteUserCity(int id) async 
+  {
     final db = await initializeDB();
-    await db.delete(
-      'userCities',
-      where: "id = ?",
-      whereArgs: [id],
-    );
+    await db.delete('userCities', where: "id = ?", whereArgs: [id],);
+    //Delete the specified row the user wants removing.
   }
 }
