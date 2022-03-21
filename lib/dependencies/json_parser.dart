@@ -4,7 +4,7 @@ class States //The data model used to temporarily store the list of states retur
 
   States({this.state});
 
-  States.fromJson(Map<String, dynamic> json) 
+  States.fromJson(Map<String, dynamic> json) //This seperates the list of states from the rest of the JSON data returned by the API.
   {
     state = json['state'];
   }
@@ -16,7 +16,7 @@ class Cities //The data model used to temporarily store the list of cities retur
 
   Cities({this.city});
 
-  Cities.fromJson(Map<String, dynamic> json) 
+  Cities.fromJson(Map<String, dynamic> json) //This seperates the list of cities from the rest of the JSON data returned by the API.
   {
     city = json['city'];
   }
