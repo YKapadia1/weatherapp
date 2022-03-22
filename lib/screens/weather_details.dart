@@ -6,8 +6,8 @@ import 'package:weatherapp/user_city_table_model.dart';
 
 const apiKey = '769abfc9-64d7-4050-8cd3-79aecfda4830';
 
-const iconDir = "image_assets/"; //The directory of the weather icons.
-const backgroundDir = "image_assets/background_"; //The directory of the background images.
+const iconDir = "assets/"; //The directory of the weather icons.
+const backgroundDir = "assets/background_"; //The directory of the background images.
 
 class WeatherDetailsRoute extends StatelessWidget 
 {
