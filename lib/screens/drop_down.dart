@@ -102,14 +102,14 @@ class DropDownWidgets extends State
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () async 
+            child: GestureDetector( //Inside the app bar is a gesture detector with the icon of adding a location.
+              onTap: () async //When the gesture detector is tapped...
               {
                 BuildContext dialogContext = context;
                 try
                 {
-                  final isConnected = await InternetAddress.lookup('google.com');
-                  if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty)
+                  final isConnected = await InternetAddress.lookup('google.com'); //Check for an internet connection...
+                  if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) //If there is an internet connection...
                   {
                     showDialog(
                       context: context, 
@@ -122,12 +122,15 @@ class DropDownWidgets extends State
                           children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Getting nearest city to you...")],)
                           );
                       },
+                      //Show a dialog box that cannot be dismissed. Inside the dialog box, place a circular progress indicator.
+                      //Also, show text that informs the user that that the app is getting a city closest to them based on their IP address location.
                     );
-                      final jsonMap = await fetchNearestCity();
+                      final jsonMap = await fetchNearestCity(); //Call the function to get the nearest city and store the response in a jsonMap.
                       String nearestCityName = jsonMap['city'];
                       String nearestStateName = jsonMap['state'];
                       String nearestCountryName = jsonMap['country'];
-                      Navigator.pop(dialogContext);
+                      //Set variables relating to the data inside the jsonMap.
+                      Navigator.pop(dialogContext); //Dismiss the dialog box.
                       showDialog(
                         context: context, 
                         barrierDismissible: false,
@@ -146,23 +149,25 @@ class DropDownWidgets extends State
                                   ],
                                 )
                               ),
+                              //Show an alert dialog box with the response from the API.
+                              //Ask the user if they want to add the city to their list.
                               actions: <Widget>
                               [
-                                TextButton(child: const Text("Yes"), onPressed: ()
+                                TextButton(child: const Text("Yes"), onPressed: () //If the user presses the yes button...
                                 {
-                                  addUserCity(nearestCityName ,nearestStateName, nearestCountryName);
-                                  Navigator.of(dialogContext).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityAdded));
-                                  Navigator.pop(context);
+                                  addUserCity(nearestCityName ,nearestStateName, nearestCountryName); //Add the city to their list.
+                                  Navigator.of(dialogContext).pop(); //Remove the dialog box.
+                                  ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityAdded)); //Show a snackbar indicating the city was added.
+                                  Navigator.pop(context); //Go back to the main screen.
                                 }), 
-                                TextButton(child: const Text("No"), onPressed: ()
-                                  {Navigator.of(dialogContext).pop();},)
+                                TextButton(child: const Text("No"), onPressed: () //If the user presses the no button...
+                                  {Navigator.of(dialogContext).pop();},) //Dismiss the dialog box.
                               ]
                             );
                           });
                         }
                       }
-                      on SocketException catch (_)
+                      on SocketException catch (_) //If no internet connection was found...
                       {
                         ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(dataErrNotConnected));
                         //Display a snackbar to the user telling them they are not connected to the internet.

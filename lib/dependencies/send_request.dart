@@ -53,8 +53,9 @@ Future<Map> fetchWeatherData(var selectedCity, var selectedState, var selectedCo
 }
 
 Future<Map> fetchNearestCity() async
+//A function to get the city nearest to the user based on their IP address location.
 {
-  final queryParameters = {'key' : apiKey};
+  final queryParameters = {'key' : apiKey}; //The parameters to specify when getting the request, in this case the API key.
   final uri = Uri.https('api.airvisual.com', '/v2/nearest_city',queryParameters);
   final response = await http.get(uri);
   final responseJson = jsonDecode(response.body)['data'];
