@@ -51,3 +51,12 @@ Future<Map> fetchWeatherData(var selectedCity, var selectedState, var selectedCo
   final responseJson = jsonDecode(response.body)['data'];
   return responseJson;
 }
+
+Future<Map> fetchNearestCity() async
+{
+  final queryParameters = {'key' : apiKey};
+  final uri = Uri.https('api.airvisual.com', '/v2/nearest_city',queryParameters);
+  final response = await http.get(uri);
+  final responseJson = jsonDecode(response.body)['data'];
+  return responseJson;
+}
