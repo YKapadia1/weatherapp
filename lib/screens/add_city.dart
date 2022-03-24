@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/screens/drop_down.dart';
-import 'package:weatherapp/dependencies/send_request.dart';
-
-import '../dependencies/my_theme.dart';
 
 List<String> countryList = [];
 List<String> stateList = ['null'];
@@ -20,7 +17,7 @@ class AddCityRoute extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
-    return Scaffold(body: const Center(child: DropDown()));
+    return const Scaffold(body: Center(child: DropDown()));
         //The body of the stateless widget will be a stateful widget in the center of the screen.
   }
 }
