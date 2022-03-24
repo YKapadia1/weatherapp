@@ -47,7 +47,8 @@ class DropDownWidgets extends State
         stateName: userState,
         countryName: userCountry,
         isFavourite: 0);
-    List<UserCityDetails> entryToAdd = [cityToAdd];
+        //Create a new data model instance with the user's selection.
+    List<UserCityDetails> entryToAdd = [cityToAdd]; //Convert into a list of data model instances.
     return await handler.insertUserCity(entryToAdd);
     //Add the user's selection to the database.
   }
@@ -56,16 +57,26 @@ class DropDownWidgets extends State
   //The function that gets and parses a country's state list from the API into a drop down list.
   {
     final jsonMap = await fetchStateData(selectedCountry); //Call the API to fetch the state list.
-    List<States> temp = (jsonMap['data'] as List).map((state) => States.fromJson(state)).toList();
-    for (int i = 0; i < temp.length; i++) {
-      if (i == 0) 
+    if (jsonMap.containsValue('fail')) //If the return code was not success...
+    {
+      ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
+      //This is needed as the API can return a status code of no supported states found.
+    }
+    else
+    {
+      List<States> temp = (jsonMap['data'] as List).map((state) => States.fromJson(state)).toList();
+    //Create a list of states by parsing the key value pairs inside of the 'data' part of the JSON return.
+    for (int i = 0; i < temp.length; i++) 
+    {
+      if (i == 0) //If inserting the first state...
       {
-        stateList.clear();
+        stateList.clear(); //Clear the state list as it might have states already inside of it.
       }
       stateList.add(temp[i].state.toString());
       //Put the state data into a list of states so it is easier to use as the drop down items.
     }
     (context as Element).reassemble();
+    } 
   }
 
   Future getCities() async 
@@ -98,7 +109,7 @@ class DropDownWidgets extends State
   {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a city...'), 
+        title: const Text('Add a city...'), //Create an appBar with the title of "Add a city..."
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
