@@ -65,8 +65,8 @@ class WeatherDetailsRoute extends StatelessWidget
           {
             if (snapshot.hasData) 
             {
-              var iconPath = iconDir + snapshot.data!['ic'].toString() + ".png"; 
-              var weatherIcon = Image.asset(iconPath,width: 100,height: 100,);
+              var iconPath = iconDir + snapshot.data!['ic'].toString() + ".png"; //The weather icon path will be the icon directory with the icon code returned by the API.
+              var weatherIcon = Image.asset(iconPath,width: 100,height: 100,); //Create an icon variable with a width and height of 100.
               var backgroundPath = backgroundDir + snapshot.data!['ic'].toString() + ".jpg";
               var weatherBackground = AssetImage(backgroundPath);
               //These variables are determined by what icon code the API returns. For example, if the API returns icon code 01d, that means the icon will be sunny.
