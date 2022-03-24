@@ -129,6 +129,8 @@ class HomePage extends State
                     Column(mainAxisAlignment: MainAxisAlignment.start,
                       children: 
                       [
+                        //Boilerplate FutureBuilder code was found on (insert website here.)
+                        //Make sure you reference the code you got here!
                         FutureBuilder(
                           //This future builder creates a card ListView based on the amount of entries getUserCities returns.
                           future: dbHandler.getUserCities(),
@@ -304,6 +306,7 @@ class HomePage extends State
                 floatingActionButton: FloatingActionButton(
                     onPressed: () async 
                     {
+                      
                       try 
                       {
                         //When the button is pressed, try to lookup the address of google.com.
@@ -311,6 +314,19 @@ class HomePage extends State
                         final isConnected = await InternetAddress.lookup('google.com');
                         if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                         {
+                           BuildContext dialogContext = context;
+                           showDialog(
+                             context: context, 
+                             barrierDismissible: false,
+                             builder: (BuildContext context)
+                             {
+                               dialogContext = context;
+                               return Dialog(
+                                 child:  Row(mainAxisSize: MainAxisSize.max,
+                                 children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Please wait...")],)
+                                 //Show a dialog to let the user know that something is happening when they press the button.
+                          );
+                        });
                           Map resp = await fetchCountryData();
                           resp.forEach((status, cityData) {tempCountryMap = cityData;});
                           for (int i = 0; i < 100; i++) //For the 100 countries that are in the list...
@@ -321,6 +337,7 @@ class HomePage extends State
                             stateList.clear(); //Make sure the state list is empty to prevent the statelist drop down from showing any values.
                             stateList.add('null'); //As well as this, add the text value 'null' so that the code in the add city screen can act accordingly.
                           }
+                          Navigator.pop(dialogContext);
                           Navigator.push(context,MaterialPageRoute(builder: (context) => const AddCityRoute(),)).then((value) //Go to the add city screen, then...
                           {
                             (context as Element).reassemble(); //Refresh the screen.
