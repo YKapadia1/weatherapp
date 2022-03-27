@@ -142,7 +142,14 @@ class DropDownWidgets extends State
                       String nearestCountryName = jsonMap['country'];
                       //Set variables relating to the data inside the jsonMap.
                       Navigator.pop(dialogContext); //Dismiss the dialog box.
-                      showDialog(
+                      if (jsonMap.containsValue('fail')) //If the return code was not success...
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
+                        //This is needed as the API can return a status code of no supported cities found.
+                      } 
+                      else
+                      {
+                        showDialog(
                         context: context, 
                         barrierDismissible: false,
                         builder: (BuildContext context)
@@ -176,6 +183,7 @@ class DropDownWidgets extends State
                               ]
                             );
                           });
+                      }
                         }
                       }
                       on SocketException catch (_) //If no internet connection was found...
