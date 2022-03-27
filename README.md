@@ -59,3 +59,7 @@ To view the weather of a city in your list, simply tap on the entry in the list.
 To add a city to your favourites list, long press on the entry you want adding to the favourites. This can also be done when viewing the weather of a given city by tapping the heart icon in the top right.
 
 To remove a city, either long press on it again, or go to the favourites list and swipe left-to-right on the entry to remove it. This can also be done when viewing the weather of a given city by tapping the heart icon in the top right.
+
+## Changing the App Theme
+
+This app supports both a light theme and a dark theme. To change the theme, tap the gear icon in the top right on the main page. This will take you to a settings page. From there, tap the slider with the "Dark Mode" label to change the theme from light to dark and vice versa.
