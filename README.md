@@ -37,7 +37,7 @@ packages, and build the project.
 Upon launching the app, you will be presented with a screen showing an empty list of cities, with the app informing you that you have no cities in the list.
 Swiping right-to-left or tapping on the "Favourites" button will show another empty list of cities. This is the favourites list. Any cities you have favourited will show up here.
 
-## Adding a City
+## Adding/Removing a City
 
 Tapping the pin with a plus icon in the bottom right will take you to a page where you can add a city of your choosing. 
 Tapping the location icon in the top right will ask if you want to add the city that is closest to you based on your IP address.
@@ -47,6 +47,8 @@ If you want to add a certain city, you can do so by filling in the drop down box
 **Note that if you are in a city unsupported by the API, then an error will be returned and a message stating as such will be displayed. Unfortunately this is a limitation of the API, and cannot be fixed by me.**
 
 Once you have added the city to the list, your selection should show up in the list of cities.
+
+Removing a city is as easy as swiping right-to-left on the entry you want removing.
 
 ## Viewing the weather of a city
 
