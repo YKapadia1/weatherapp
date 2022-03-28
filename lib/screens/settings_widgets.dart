@@ -8,7 +8,7 @@ late SharedPreferences prefs;
 class Settings extends StatefulWidget 
 {
   final ThemeModel themeNotifier;
-  const Settings(this.themeNotifier);
+  const Settings(this.themeNotifier, {Key? key}) : super(key: key);
   bool get isDarkEnabled => themeNotifier.isDark;
 
   @override
