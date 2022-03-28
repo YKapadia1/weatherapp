@@ -156,7 +156,7 @@ class DropDownWidgets extends State
                         {
                           dialogContext = context;
                           return AlertDialog(
-                            title: Text("Add City?"),
+                            title: const Text("Add City?"),
                             content: SingleChildScrollView(
                               child: ListBody(
                                 children: <Widget>[
@@ -164,7 +164,7 @@ class DropDownWidgets extends State
                                   Text(nearestCityName),
                                   Text(nearestStateName + ", " + nearestCountryName),
                                   const Text("Would you like to add this city?")
-                                  ],
+                                  ]
                                 )
                               ),
                               //Show an alert dialog box with the response from the API.
@@ -194,7 +194,7 @@ class DropDownWidgets extends State
                     },
                     child: const Icon(Icons.gps_fixed,size: 26.0,),
                     )),
-                    ],),
+                  ],),
         body: Center(
             child: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -236,11 +236,7 @@ class DropDownWidgets extends State
                         items: countryList.map<DropdownMenuItem<String>>((String value) 
                         {return DropdownMenuItem<String>(value: value,child: Text(value));}).toList(),
                         decoration: const InputDecoration(labelText: "Select a country...")),
-                    if (stateList[0] == 'null') ... //If the first element in stateList says 'null'...
-                    [
-                      DropdownButtonFormField(items: const [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
-                    ] 
-                    else ...
+                    if (stateList[0] != 'null') ... //If the first element in stateList says 'null'...
                     [
                       DropdownButtonFormField<String>(
                           value: selectedState,
@@ -277,10 +273,8 @@ class DropDownWidgets extends State
                             );
                           }).toList(),
                           decoration: const InputDecoration(labelText: "Select a state...")),
-                      if (cityList[0] == 'null') ... //If the first element in cityList is 'null'...
+                      if (cityList[0] != 'null') ... //If the first element in cityList is 'null'...
                       [
-                        DropdownButtonFormField(items: const [], onChanged: null) //Create a dropdown list that has no items. This will disable the dropdown button.
-                      ] else ...[
                         DropdownButtonFormField<String>(
                             value: selectedCity,
                             icon: const Icon(Icons.arrow_drop_down),
