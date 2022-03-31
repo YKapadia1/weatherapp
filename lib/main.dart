@@ -147,8 +147,9 @@ class HomePage extends State
                                   shrinkWrap: true,
                                   itemCount: snapshot.data?.length,
                                   itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Dismissible(
+                                      (BuildContext context, int index) 
+                                      {
+                                        return Dismissible(
                                         direction: DismissDirection.endToStart,
                                         background:AppTheme.dismissibleContainer(),
                                         key: ValueKey<int>(snapshot.data![index].id!),
@@ -172,9 +173,7 @@ class HomePage extends State
                                               if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                                               {
                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => WeatherDetailsRoute(snapshot.data![index]))).then((value)
-                                                {
-                                                  setState(() {});
-                                                });
+                                                {setState(() {});});
                                               }
                                             } 
                                             on SocketException catch (_)  //If the internet address lookup threw an exception, i.e there is no connection...
@@ -183,7 +182,8 @@ class HomePage extends State
                                               //Only show a snackbar to the user indicating that there is no internet connection, and do not navigate to another screen.
                                             }
                                           },
-                                          onLongPress: () {
+                                          onLongPress: () 
+                                          {
                                             if (snapshot.data![index].isFavourite == 0) //If the city that has been long pressed is not favourited...
                                             {
                                               dbHandler.setFavCity(snapshot.data![index],1); //Update the entry's isFavourited column to state that the city is favourited.
@@ -191,17 +191,16 @@ class HomePage extends State
                                               //Show a snackbar to the user informing them the city has been added to their favourites.
                                               //Because the FutureBuilder for the favourites list is constantly being executed, this will be shown as soon as
                                               //the user adds a city to their favourites list.
-                                              setState(
-                                                  () {}); //Refresh the widgets on screen.
-                                            } else //If the city is already favourited...
+                                              setState(() {}); //Refresh the widgets on screen.
+                                            } 
+                                            else //If the city is already favourited...
                                             {
                                               dbHandler.setFavCity(snapshot.data![index], 0); 
                                               //Update the entry's isFavourited column to state that the city
                                               //is no longer favourited.
                                               ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(removedFav));
                                               //Show a snackbar to the user informing them the city has been removed from their favourites.
-                                              setState(
-                                                  () {}); //Refresh the widgets on screen.
+                                              setState(() {}); //Refresh the widgets on screen.
                                             }
                                           },
                                           child: Card(
@@ -305,8 +304,7 @@ class HomePage extends State
                 ),
                 floatingActionButton: FloatingActionButton(
                     onPressed: () async 
-                    {
-                      
+                    { 
                       try 
                       {
                         //When the button is pressed, try to lookup the address of google.com.
