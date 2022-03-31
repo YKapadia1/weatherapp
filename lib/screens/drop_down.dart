@@ -179,7 +179,7 @@ class DropDownWidgets extends State
                                   Navigator.pop(context); //Go back to the main screen.
                                 }), 
                                 TextButton(child: const Text("No"), onPressed: () //If the user presses the no button...
-                                  {Navigator.of(dialogContext).pop();},) //Dismiss the dialog box.
+                                  {Navigator.of(dialogContext).pop();}) //Dismiss the dialog box.
                               ]
                             );
                           });
@@ -219,10 +219,24 @@ class DropDownWidgets extends State
                               //This is to ensure the user still has an internet connection.
                               if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) //If there is an internet connection...
                               {
+                                BuildContext dialogContext = context;
+                                showDialog(
+                                  context: context, 
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context)
+                                  {
+                                    dialogContext = context;
+                                    return Dialog(
+                                      child:  Row(mainAxisSize: MainAxisSize.max,
+                                      children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Getting states...")],)
+                                      );
+                                  });
+                                      //Show a dialog box that cannot be dismissed. Inside the dialog box, place a circular progress indicator.
                                 getStates(); //Call on the API to get the states.
                                 selectedState = null; //Set the value of the selected state to null.
                                 selectedCity = null; //Set the value of the selected city to null.
                                 cityList[0] = 'null';//Set the first element of cityList to 'null'. 
+                                Navigator.pop(dialogContext);
                             //This is to prevent the user from selecting a non existent element in the city drop down list and causing an error.
                               }
                             } 
@@ -255,8 +269,21 @@ class DropDownWidgets extends State
                                 final isConnected = await InternetAddress.lookup('google.com');
                                 if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                                 {
+                                  BuildContext dialogContext = context;
+                                  showDialog(
+                                  context: context, 
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context)
+                                  {
+                                    dialogContext = context;
+                                    return Dialog(
+                                      child:  Row(mainAxisSize: MainAxisSize.max,
+                                      children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Getting cities...")],)
+                                      );
+                                  });
                                   getCities();
                                   selectedCity = null;
+                                  Navigator.pop(context);
                                 }
                               } 
                               on SocketException catch (_) 
