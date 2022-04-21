@@ -129,8 +129,7 @@ class HomePage extends State
                     Column(mainAxisAlignment: MainAxisAlignment.start,
                       children: 
                       [
-                        //Boilerplate FutureBuilder code was found on (insert website here.)
-                        //Make sure you reference the code you got here!
+                        //Boilerplate FutureBuilder code was found on https://blog.logrocket.com/flutter-sqlite-how-to-persist-data/.
                         FutureBuilder(
                           //This future builder creates a card ListView based on the amount of entries getUserCities returns.
                           future: dbHandler.getUserCities(),
