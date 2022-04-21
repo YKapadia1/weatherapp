@@ -56,7 +56,23 @@ class DropDownWidgets extends State
   Future getStates() async 
   //The function that gets and parses a country's state list from the API into a drop down list.
   {
+    BuildContext dialogContext = context;
+    showDialog(
+    context: context, 
+    barrierDismissible: false,
+    builder: (BuildContext context)
+    {
+      dialogContext = context;
+      return Dialog(
+      child:  Row(mainAxisSize: MainAxisSize.max,
+      children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Getting nearest city to you...")],)
+      );
+    },
+    //Show a dialog box that cannot be dismissed. Inside the dialog box, place a circular progress indicator.
+    //Also, show text that informs the user that that the app is getting the cities...
+   );
     final jsonMap = await fetchStateData(selectedCountry); //Call the API to fetch the state list.
+    Navigator.pop(dialogContext);
     if (jsonMap.containsValue('fail')) //If the return code was not success...
     {
       ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
@@ -82,7 +98,23 @@ class DropDownWidgets extends State
   Future getCities() async 
   //The function that gets and parses a state's city list from the API into a drop down list.
   {
+    BuildContext dialogContext = context;
+    showDialog(
+      context: context, 
+      barrierDismissible: false,
+      builder: (BuildContext context)
+      {
+        dialogContext = context;
+        return Dialog(
+        child:  Row(mainAxisSize: MainAxisSize.max,
+        children: const [Padding(padding: EdgeInsets.all(15.0), child: CircularProgressIndicator(),), Text("Getting cities...")],)
+        );
+      },
+    //Show a dialog box that cannot be dismissed. Inside the dialog box, place a circular progress indicator.
+    //Also, show text that informs the user that that the app is getting the cities...
+    );
     final jsonMap = await fetchCityData(selectedState, selectedCountry); //Get the city list from the API.
+    Navigator.pop(dialogContext);
     if (jsonMap.containsValue('fail')) //If the return code was not success...
     {
       ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar(cityDataErr)); //Display a snackbar indicating that an error occured.
@@ -219,7 +251,6 @@ class DropDownWidgets extends State
                               //This is to ensure the user still has an internet connection.
                               if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) //If there is an internet connection...
                               {
-                                ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar("Getting states, please wait..."));
                                 getStates(); //Call on the API to get the states.
                                 selectedState = null; //Set the value of the selected state to null.
                                 selectedCity = null; //Set the value of the selected city to null.
@@ -256,7 +287,6 @@ class DropDownWidgets extends State
                                 final isConnected = await InternetAddress.lookup('google.com');
                                 if (isConnected.isNotEmpty && isConnected[0].rawAddress.isNotEmpty) 
                                 {
-                                  ScaffoldMessenger.of(context).showSnackBar(AppTheme.defaultSnackBar("Getting cities, please wait..."));
                                   getCities();
                                   selectedCity = null;
                                 }
