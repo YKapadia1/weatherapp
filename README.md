@@ -1,5 +1,7 @@
 # CO2509 Assignment: Weather Application
 
+IMPORTANT: This application will no longer work as the API key has expired.
+
 An android app using Flutter aimed at showing the weather and forecast of user seleted cities.
 
 ## Introduction
